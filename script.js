@@ -1,21 +1,13 @@
-// La funcionalidad minima requerida para este proyecto es:
-
-// - Definir destino en el mapa,
-// - Controlar si el usuario está en proximidad de su destino,
-// - Vibrar si el usuario está cerca de su destino.
-
 const mymap = L.map('sample_map').setView([40.741, -3.884], 15);
 
-let myDestination = { latitude: 0.0, longitude: 0.0 };
-let myCurrentPosition = { latitude: 0.0, longitude: 0.0 };
+// Don't start the program until there is a destination
+let start = false;
 
 // Create the initial destination marker and added it to the map
-var abc = new L.LatLng(0,0);
-var myMarker = new L.marker(abc).addTo(mymap);
+let myDestination = new L.marker([0.0, 0.0], {title: "Destination"}).addTo(mymap);
+let myPosition = new L.marker([0.0, 0.0], {title: "Actual Position"}).addTo(mymap);
 
-// let myMarker = new L.marker();
-
-// Function that keeps track of the user position
+// Keep track with the user and check if he's close to destination
 setInterval(updatePosition, 1000);
 setInterval(checkDistance, 1000);
 
@@ -27,20 +19,16 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 //https://leafletjs.com/reference-1.7.1.html#interactive-layer-click
 mymap.on('click', function (e) {
+  start = true;
   var newLatLng = new L.LatLng(e.latlng.lat, e.latlng.lng);
-  myMarker.setLatLng(newLatLng);
-  console.log(myMarker);
-  // myMarker = new L.marker(e.latlng).addTo(mymap);
-  myDestination.latitude = e.latlng.lat;
-  myDestination.longitude = e.latlng.lng;
+  myDestination.setLatLng(newLatLng);
 });
 
 
 function updatePosition() {
   navigator.geolocation.getCurrentPosition(function (position) {
-    console.log("[MIS COORDENADAS] Latitud: " + position.coords.latitude + ", Longitud: " + position.coords.longitude)
-    myCurrentPosition.latitude = position.coords.latitude;
-    myCurrentPosition.longitude = position.coords.longitude;
+    var newLatLng = new L.LatLng(position.coords.latitude, position.coords.longitude);
+    myPosition.setLatLng(newLatLng);
   });
 }
 
@@ -48,16 +36,17 @@ function updatePosition() {
 function checkDistance() {
 
   // Adjust the amount of terrain that you consider as an error on the GPS precission
-  error = 0.01;
+  error = 0.001;
 
-  if (Math.abs(myCurrentPosition.latitude - myDestination.latitude) <= error) {
-    if (Math.abs(myCurrentPosition.longitude - myDestination.longitude) <= error) {
-      console.log("Cerca de cojones")
-      // AQUÍ HABRÍA QUE VIBRAR GUAPARDO
+  // console.log("[POSICIÓN]: " + myPosition._latlng);
+  // console.log("[DESTINO]: " + myDestination._latlng);
+
+  if (start) {
+    if (Math.abs(myPosition._latlng.lat - myDestination._latlng.lat) <= error) {
+      if (Math.abs(myPosition._latlng.lng - myDestination._latlng.lng) <= error) {
+        console.log("[DESTINO CERCA]");
+        navigator.vibrate();
+      }
     }
   }
 }
-
-
-// Que solo haiga una chincheta
-// Que aparezca chinchetita de tu propia ubicación
