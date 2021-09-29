@@ -1,11 +1,11 @@
-const mymap = L.map('sample_map').setView([40.741, -3.884], 15);
+const mymap = L.map('sample_map').setView([40.416729, -3.703339], 10);
 
 // Don't start the program until there is a destination
 let start = false;
 
 // Create the initial destination marker and added it to the map
-let myDestination = new L.marker([0.0, 0.0], {title: "Destination"}).addTo(mymap);
-let myPosition = new L.marker([0.0, 0.0], {title: "Actual Position"}).addTo(mymap);
+let myDestination = new L.marker([0.0, 0.0], { title: "Destination" }).addTo(mymap);
+let myPosition = new L.marker([0.0, 0.0], { title: "Actual Position" }).addTo(mymap);
 
 // Keep track with the user and check if he's close to destination
 setInterval(updatePosition, 1000);
@@ -36,15 +36,15 @@ function updatePosition() {
 function checkDistance() {
 
   // Adjust the amount of terrain that you consider as an error on the GPS precission
-  error = 0.001;
+  error_area = 0.001;
 
   // console.log("[POSICIÓN]: " + myPosition._latlng);
   // console.log("[DESTINO]: " + myDestination._latlng);
 
   if (start) {
-    if (Math.abs(myPosition._latlng.lat - myDestination._latlng.lat) <= error) {
-      if (Math.abs(myPosition._latlng.lng - myDestination._latlng.lng) <= error) {
-        console.log("[DESTINO CERCA]");
+    if (Math.abs(myPosition._latlng.lat - myDestination._latlng.lat) <= error_area) {
+      if (Math.abs(myPosition._latlng.lng - myDestination._latlng.lng) <= error_area) {
+        console.log("[== DESTINO CERCA ==]");
         navigator.vibrate();
       }
     }
