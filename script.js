@@ -32,7 +32,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 18
 }).addTo(mymap);
 
-//https://leafletjs.com/reference-1.7.1.html#interactive-layer-click
+// https://leafletjs.com/reference-1.7.1.html#interactive-layer-click
 mymap.on('click', function (e) {
   start = true;
   var newLatLng = new L.LatLng(e.latlng.lat, e.latlng.lng);
@@ -52,9 +52,6 @@ function checkDistance() {
 
   // Adjust the amount of terrain that you consider as an error on the GPS precission
   error_area = 0.0003;
-
-  // console.log("[POSICIÓN]: " + myPosition._latlng);
-  // console.log("[DESTINO]: " + myDestination._latlng);
 
   if (start) {
     if (Math.abs(myPosition._latlng.lat - myDestination._latlng.lat) <= error_area) {
