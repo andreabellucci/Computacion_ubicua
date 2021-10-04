@@ -20,7 +20,7 @@ html, body, #sample_map {
   -moz-box-sizing: border-box;
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  right: 4.60%;
+  right: 4%;
   text-align: center;
   text-decoration: none;
   margin: 0px auto;
@@ -28,6 +28,10 @@ html, body, #sample_map {
   height: 5%;
   background-image: url('https://storage.googleapis.com/static.inmoweb.es/clients/1762/cms/location-pin-compact-outline.png');
   background-size: cover;
+  width: -webkit-fit-content;
+  height: -webkit-fit-content;
+  width: -moz-fit-content;
+  height: -moz-fit-content;
 }
 
 #button_center:hover {
@@ -42,10 +46,9 @@ html, body, #sample_map {
   border: 6px solid #fc2525;
   padding: 5px;
   border-radius: 4px;
-  right: 2%;
+  right: 4%;
   text-align: center;
   vertical-align: bottom;
-  display: inline-block;
   float: left/right;
   width: -webkit-fit-content;
   height: -webkit-fit-content;
