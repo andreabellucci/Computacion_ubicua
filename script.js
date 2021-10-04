@@ -51,7 +51,7 @@ function updatePosition() {
 function checkDistance() {
 
   // Adjust the amount of terrain that you consider as an error on the GPS precission
-  error_area = 0.001;
+  error_area = 0.0003;
 
   // console.log("[POSICIÓN]: " + myPosition._latlng);
   // console.log("[DESTINO]: " + myDestination._latlng);
@@ -81,7 +81,7 @@ function calculateDistance() {  // generally used geo measurement function
     var result = d * 1000; // meters
     document.getElementById("distance_indicator").innerText = Math.round(result) + " meters";
 
-  }else{
+  } else {
     document.getElementById("distance_indicator").innerText = "Waiting for Destination...";
   }
 }
