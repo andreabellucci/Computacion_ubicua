@@ -41,7 +41,7 @@ html, body, #sample_map {
 #distance_indicator {
   z-index: 955;
   position: absolute;
-  top: 10%;
+  top: 15%;
   background-color: #ff513a;
   border: 6px solid #fc2525;
   padding: 5px;
