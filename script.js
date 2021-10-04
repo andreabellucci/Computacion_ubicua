@@ -1,11 +1,23 @@
 const mymap = L.map('sample_map').setView([40.416729, -3.703339], 10);
 
-// Don't start the program until there is a destination
-let start = false;
+let flagIcon = L.Icon.extend({
+  options: {
+    iconUrl: 'https://img.icons8.com/cotton/2x/000000/finish-flag.png',
+    iconSize: 47,
+    shadowSize: [50, 64],
+    iconAnchor: [20, 46],
+    popupAnchor: [-3, -76]
+  }
+});
+
+let destinationIcon = new flagIcon();
 
 // Create the initial destination marker and added it to the map
-let myDestination = new L.marker([0.0, 0.0], { title: "Destination" }).addTo(mymap);
+let myDestination = new L.marker([0.0, 0.0], { icon: destinationIcon, title: "Destination" }).addTo(mymap);
 let myPosition = new L.marker([0.0, 0.0], { title: "Actual Position" }).addTo(mymap);
+
+// Don't start the program until there is a destination
+let start = false;
 
 // Keep track with the user and check if he's close to destination
 setInterval(updatePosition, 1000);
@@ -44,9 +56,11 @@ function checkDistance() {
   if (start) {
     if (Math.abs(myPosition._latlng.lat - myDestination._latlng.lat) <= error_area) {
       if (Math.abs(myPosition._latlng.lng - myDestination._latlng.lng) <= error_area) {
-        console.log("[== DESTINO CERCA ==]");
-        navigator.vibrate();
-      }
-    }
+        console.log("[== THE DESTINATION IS CLOSE ==]"); // For PC or devices without vibration
+        navigator.vibrate([50, 10, 100, 10, 50, 0, 50]); // Vibration pattern
+      } else
+        navigator.vibrate(0); // To cancel the vibration if we change the marker
+    } else
+      navigator.vibrate(0); // To cancel the vibration if we change the marker
   }
 }
