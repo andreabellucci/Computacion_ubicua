@@ -11,6 +11,8 @@ h1 {
     font-variant: normal;
     font-weight: 700;
     line-height: 26.4px;
+    text-align: center;
+    margin: 2%;
 }
 
 h3 {
@@ -47,4 +49,8 @@ pre {
     font-variant: normal;
     font-weight: 400;
     line-height: 18.5714px;
+}
+
+.single_task_container {
+    display: inline-flex;
 }
