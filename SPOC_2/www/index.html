@@ -13,16 +13,13 @@
 <body>
     <div id="app_container">
         <h1>My Notes</h1>
+        <!-- here we make the search -->
         <div id="search_div">
             <input type="text" id="search_filter" onkeyup="filter()" placeholder="search filter">
         </div>
-        <!-- Here we insert the storaged and new tasks -->
-        <div id="task_list">
-            <!-- <div class="single_task_container" id="task_n_1">
-                <input type="checkbox" checked id="task_completed_n_1">
-                <p id="task_text_n_1">Ir a comprar el pan</p>
-            </div> -->
-        </div>
+        <!-- here we print the storaged and new tasks -->
+        <div id="task_list"></div>
+        <!-- here we insert new tasks -->
         <div id="input_div">
             <input type="text" id="input_task" placeholder="new task">
             <button onclick="add()" id="add_button">add task</button>

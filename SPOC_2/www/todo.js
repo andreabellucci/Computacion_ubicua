@@ -12,12 +12,9 @@ let search_filter = document.getElementById('search_filter');
 // initial tasks
 window.onload = load_tasks();
 
-// backend functions
+// BACKEND FUNCTIONS
+// add new tasks
 function add() {
-    /* añade una nueva tarea en la primera posición de la lista
-    con el texto introducido en un campo input en la interfaz;
-    esto será el nombre de la tarea (propiedad title). No añade
-    nada si el campo está vacío. */
 
     if (input_task.value != "") {
         let new_task = {
@@ -44,6 +41,7 @@ function add() {
 
 }
 
+// remove a single task
 function remove(index) {
     todos.splice(index, 1);
 
@@ -59,6 +57,7 @@ function remove(index) {
     update_task_list();
 }
 
+// mark some task as done
 function done(index) {
     // reverse the checked property
     todos[index].done = !todos[index].done;
@@ -71,6 +70,7 @@ function done(index) {
     update_task_list();
 }
 
+// filter the tasks 
 function filter() {
 
     let filter = search_filter.value.toUpperCase();
@@ -97,12 +97,8 @@ function filter() {
     }
 }
 
+// load server storaged tasks
 async function load_tasks() {
-    /* Será necesario utilizar la función Fetch para recuperar
-    el contenido del fichero de manera asíncrona. Se puede
-    utilizar la sintaxis async/await o la sintaxis con promesas.
-    El contenido del fichero se guardará en un Array de tareas
-    en la aplicación. */
 
     const response = await fetch("tasks.json");
     const json_data = await response.json();
@@ -115,6 +111,7 @@ async function load_tasks() {
 
 }
 
+// auxiliar function that finally prints the list on the page
 function update_task_list() {
     let completed_task = "checked";
     let html_complete_tasks_list = ""
