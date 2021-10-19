@@ -12,7 +12,7 @@ io.on("connection", function (socket) {
   socket.on("fetch_tasks", function (message) {
     console.log("[RETRIEVING TASKS...]");
 
-    socket.emit("retrieve_tasks", );
+    
   });
 
   socket.on("add_task", function (message) {

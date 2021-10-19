@@ -75,6 +75,9 @@ function load_tasks() {
 
         });
 
+        const response = await fetch("tasks.json");
+        const data = await.response.text();
+
 
 }
 
