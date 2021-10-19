@@ -40,6 +40,8 @@ function add() {
         // update all the array data
         socket.emit("add_task", data_string);
 
+        update_task_list();
+
         input_task.value = ""; // clean the input data
     }
 
@@ -69,33 +71,34 @@ function load_tasks() {
                 todos.push(json_data[i]);
             }
 
-            console.log(todos);
-
-            let completed_task = "checked";
-            let html_complete_tasks_list = ""
-
-            for (let i = 0; i < todos.length; i++) {
-                let html_to_append = "";
-                if (todos[i].done) {
-                    html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
-                        + "<input type='checkbox' " + completed_task + " id='task_completed_n_" + i + "'>"
-                        + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
-                        + "</div>";
-                } else {
-                    html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
-                        + "<input type='checkbox' id='task_completed_n_" + i + "'>"
-                        + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
-                        + "</div>";
-                }
-
-                html_complete_tasks_list += html_to_append;
-            }
-
-            console.log(html_complete_tasks_list);
-
-            task_list.innerHTML = html_complete_tasks_list;
+            update_task_list();
 
         });
 
 
+}
+
+function update_task_list() {
+    let completed_task = "checked";
+    let html_complete_tasks_list = ""
+
+    for (let i = 0; i < todos.length; i++) {
+        let html_to_append = "";
+        if (todos[i].done) {
+            html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
+                + "<input type='checkbox' " + completed_task + " id='task_completed_n_" + i + "'>"
+                + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
+                + "</div>";
+        } else {
+            html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
+                + "<input type='checkbox' id='task_completed_n_" + i + "'>"
+                + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
+                + "</div>";
+        }
+
+        html_complete_tasks_list += html_to_append;
+    }
+
+    // adds the events to the task list finally
+    task_list.innerHTML = html_complete_tasks_list;
 }

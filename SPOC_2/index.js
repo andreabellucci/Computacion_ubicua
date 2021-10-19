@@ -10,21 +10,13 @@ io.on("connection", function (socket) {
   console.log("nuevo cliente: " + socket.id);
 
   socket.on("fetch_tasks", function (message) {
-    console.log("Recuperando tareas...");
-
-    // fetch('www/tasks.json')
-    //   .then(response => response.text())
-    //   .then(textString => {
-
-    //     console.log(textString);
-
-    //   });
+    console.log("[RETRIEVING TASKS...]");
 
     socket.emit("retrieve_tasks", );
   });
 
   socket.on("add_task", function (message) {
-    console.log("[UPDATING TASKS STORAGE...]");
+    console.log("[UPDATING TASKS STORAGE...]\n" + message);
   });
 
 });

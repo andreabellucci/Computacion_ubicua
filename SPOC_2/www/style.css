@@ -54,6 +54,7 @@ pre {
 
 .single_task_container {
     display: inline-flex;
+    margin: 1%;
 }
 
 body {
@@ -80,6 +81,7 @@ body {
 
 #input_div input {
     width: 80%;
+    padding-left: 2%;
 }
 
 #app_container {
