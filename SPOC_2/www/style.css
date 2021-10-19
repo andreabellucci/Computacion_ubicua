@@ -31,6 +31,7 @@ p {
     font-variant: normal;
     font-weight: 400;
     line-height: 20px;
+    margin-left: 2%;
 }
 
 blockquote {
@@ -53,4 +54,34 @@ pre {
 
 .single_task_container {
     display: inline-flex;
+}
+
+body {
+    background-image: URL("https://www.wildtextures.com/wp-content/uploads/2011/12/wildtextures-seamless-paper-texture-480x480.jpg");
+}
+
+#task_list {
+    display: flex;
+    flex-direction: column;
+    margin: 2%;
+    padding: 2%;
+    border: solid 2px black;
+    border-radius: 5px;
+}
+
+#input_div {
+    margin: 2%;
+}
+
+#input_div button {
+    float: right;
+    width: 15%;
+}
+
+#input_div input {
+    width: 80%;
+}
+
+#app_container {
+    margin: 2%;
 }

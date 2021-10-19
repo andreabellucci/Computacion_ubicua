@@ -11,6 +11,10 @@ let add_button = document.getElementById('add_button');
 // initial tasks
 window.onload = load_tasks();
 
+socket.on("retrieve_tasks", function (message) {
+    console.log(message);
+});
+
 // backend functions
 function add() {
     /* añade una nueva tarea en la primera posición de la lista
@@ -33,7 +37,8 @@ function add() {
 
         let data_string = JSON.stringify(todos);
 
-        // aquí se supone que irá la parte que escribe toda la movida
+        // update all the array data
+        socket.emit("add_task", data_string);
 
         input_task.value = ""; // clean the input data
     }
@@ -53,6 +58,8 @@ function load_tasks() {
     El contenido del fichero se guardará en un Array de tareas
     en la aplicación. */
 
+    //socket.emit("fetch_tasks");
+
     fetch('tasks.json')
         .then(response => response.text())
         .then(textString => {
@@ -64,19 +71,31 @@ function load_tasks() {
 
             console.log(todos);
 
+            let completed_task = "checked";
+            let html_complete_tasks_list = ""
+
+            for (let i = 0; i < todos.length; i++) {
+                let html_to_append = "";
+                if (todos[i].done) {
+                    html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
+                        + "<input type='checkbox' " + completed_task + " id='task_completed_n_" + i + "'>"
+                        + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
+                        + "</div>";
+                } else {
+                    html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
+                        + "<input type='checkbox' id='task_completed_n_" + i + "'>"
+                        + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
+                        + "</div>";
+                }
+
+                html_complete_tasks_list += html_to_append;
+            }
+
+            console.log(html_complete_tasks_list);
+
+            task_list.innerHTML = html_complete_tasks_list;
+
         });
 
-    let completed_task = "checked";
-
-    for (let i = 0; i < todos.length; i++) {
-        let html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
-            + "<input type='checkbox' " + todos[i].done ? completed_task : "" + " id='task_completed_n_" + i + "'>"
-            + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
-        + "</div>';"
-
-        task_list.append(html_to_append);
-    }
-
-    // socket.emit("fetch_tasks");
 
 }

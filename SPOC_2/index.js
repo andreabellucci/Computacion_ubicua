@@ -12,17 +12,19 @@ io.on("connection", function (socket) {
   socket.on("fetch_tasks", function (message) {
     console.log("Recuperando tareas...");
 
-    fetch('tasks.json')
-      .then(response => response.text())
-      .then(textString => {
+    // fetch('www/tasks.json')
+    //   .then(response => response.text())
+    //   .then(textString => {
 
-        console.log(textString);
+    //     console.log(textString);
 
-      });
+    //   });
+
+    socket.emit("retrieve_tasks", );
   });
 
-  socket.on("add_tasks", function (message) {
-    console.log("Añadiendo tareas...");
+  socket.on("add_task", function (message) {
+    console.log("[UPDATING TASKS STORAGE...]");
   });
 
 });

@@ -11,16 +11,21 @@
 </head>
 
 <body>
-    <h1>My Notes</h1>
-    <!-- Here we insert the storaged and new tasks -->
-    <div id="task_list">
-        <!-- <div class="single_task_container" id="task_n_1">
-            <input type="checkbox" checked id="task_completed_n_1">
-            <p id="task_text_n_1">Ir a comprar el pan</p>
-        </div> -->
+    <div id="app_container">
+        <h1>My Notes</h1>
+        <!-- Here we insert the storaged and new tasks -->
+        <div id="task_list">
+            <!-- <div class="single_task_container" id="task_n_1">
+                <input type="checkbox" checked id="task_completed_n_1">
+                <p id="task_text_n_1">Ir a comprar el pan</p>
+            </div> -->
+        </div>
+        <div id="input_div">
+            <input type="text" id="input_task" placeholder="new task">
+            <button onclick="add()" id="add_button">add task</button>
+        </div>
     </div>
-    <input type="text" id="input_task" placeholder="new task">
-    <button onclick="add()" id="add_button">useless button</button>
+
     <script src="/socket.io/socket.io.js" charset="utf-8"></script>
     <script src="todo.js" charset="utf-8"></script>
 </body>
