@@ -11,10 +11,6 @@ let add_button = document.getElementById('add_button');
 // initial tasks
 window.onload = load_tasks();
 
-socket.on("retrieve_tasks", function (message) {
-    console.log(message);
-});
-
 // backend functions
 function add() {
     /* añade una nueva tarea en la primera posición de la lista
@@ -53,7 +49,7 @@ function done() { }
 
 function filter() { }
 
-function load_tasks() {
+async function load_tasks() {
     /* Será necesario utilizar la función Fetch para recuperar
     el contenido del fichero de manera asíncrona. Se puede
     utilizar la sintaxis async/await o la sintaxis con promesas.
@@ -62,21 +58,28 @@ function load_tasks() {
 
     //socket.emit("fetch_tasks");
 
-    fetch('tasks.json')
-        .then(response => response.text())
-        .then(textString => {
-            let json_data = JSON.parse(textString)
+    // fetch('tasks.json')
+    //     .then(response => response.text())
+    //     .then(textString => {
+    //         let json_data = JSON.parse(textString)
 
-            for (let i = 0; i < json_data.length; i++) {
-                todos.push(json_data[i]);
-            }
+    //         for (let i = 0; i < json_data.length; i++) {
+    //             todos.push(json_data[i]);
+    //         }
 
-            update_task_list();
+    //         update_task_list();
 
-        });
+    //     });
 
-        const response = await fetch("tasks.json");
-        const data = await.response.text();
+    const response = await fetch("tasks.json");
+    const json_data = await response.json();
+    console.log(json_data);
+
+    for (let i = 0; i < json_data.length; i++) {
+        todos.push(json_data[i]);
+    }
+
+    update_task_list();
 
 
 }
