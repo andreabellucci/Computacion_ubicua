@@ -1,1 +1,22 @@
-[{"id":1,"title":"dsfasfsadfsadfasdfa","done":false},{"id":2,"title":"fasdasdfsadfsadfasd","done":false},{"id":3,"title":"adsfasdfasfd","done":false},{"id":4,"title":"adsfasdfasf","done":false},{"id":5,"title":"Aprender JavaScript","done":false},{"id":6,"title":"Terminar los ejercicios","done":false},{"id":7,"title":"Hacer 100 sentadillas","done":true}]
+[
+    {
+        "id": 1,
+        "title": "Acabar el trabajito de javascript",
+        "done": false
+    },
+    {
+        "id": 2,
+        "title": "Aprender JavaScript",
+        "done": true
+    },
+    {
+        "id": 3,
+        "title": "Terminar los ejercicios",
+        "done": true
+    },
+    {
+        "id": 4,
+        "title": "Hacer 100 sentadillas",
+        "done": true
+    }
+]

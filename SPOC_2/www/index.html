@@ -14,8 +14,7 @@
     <div id="app_container">
         <h1>My Notes</h1>
         <div id="search_div">
-            <input type="text" id="search_filter" placeholder="search filter">
-            <!-- <button onclick="add()" id="search_button">add task</button> -->
+            <input type="text" id="search_filter" onkeyup="filter()" placeholder="search filter">
         </div>
         <!-- Here we insert the storaged and new tasks -->
         <div id="task_list">
