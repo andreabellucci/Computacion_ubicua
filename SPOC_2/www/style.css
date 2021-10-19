@@ -87,3 +87,13 @@ body {
 #app_container {
     margin: 2%;
 }
+
+#search_div {
+    margin: 2%;
+}
+
+#search_div input{
+    width: 97%;
+    overflow: hidden;
+    padding-left: 2%;
+}

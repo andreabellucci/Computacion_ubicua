@@ -11,9 +11,17 @@ app.use(express.static('www'));
 io.on("connection", function (socket) {
   console.log("[NEW CLIENT CONNECTED...] SOCKET.ID: " + socket.id);
 
-  socket.on("add_task", function (message) {
-    console.log("[UPDATING TASKS STORAGE...]\n");
-    openFile(message);
+  socket.on("mod_task", function (message) {
+    console.log("[UPDATING TASKS STORAGE...]");
+    
+    const path = __dirname + "/tasks.json";
+
+    fs.writeFile(path, message, { flag: 'w+' }, err => {
+      if (err) {
+        console.error(`[ERROR WHILE WRITING FILE] ${err.message}`);
+        return
+      }
+    })
   });
 });
 
@@ -23,7 +31,6 @@ app.get("/tasks.json", function (req, res) {
   const path = __dirname + "/tasks.json";
 
   fs.readFile(path, 'utf-8', (err, data) => {
-    console.log("hola");
     if (err) {
       console.error(`[ERROR WHILE READING FILE] ${err.message}`);
     } else {
@@ -34,14 +41,5 @@ app.get("/tasks.json", function (req, res) {
     }
   })
 });
-
-async function openFile(content) {
-  try {
-    const path = __dirname + "/tasks.json";
-    fs.writeFile(path, content, { flag: 'w+' });
-  } catch (error) {
-    console.error(`[ERROR WHILE WRITING FILE] ${error.message}`);
-  }
-}
 
 server.listen(3000, () => console.log('server started'));

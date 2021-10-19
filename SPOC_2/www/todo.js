@@ -34,7 +34,7 @@ function add() {
         let data_string = JSON.stringify(todos);
 
         // update all the array data
-        socket.emit("add_task", data_string);
+        socket.emit("mod_task", data_string);
 
         update_task_list();
 
@@ -55,21 +55,6 @@ async function load_tasks() {
     utilizar la sintaxis async/await o la sintaxis con promesas.
     El contenido del fichero se guardará en un Array de tareas
     en la aplicación. */
-
-    //socket.emit("fetch_tasks");
-
-    // fetch('tasks.json')
-    //     .then(response => response.text())
-    //     .then(textString => {
-    //         let json_data = JSON.parse(textString)
-
-    //         for (let i = 0; i < json_data.length; i++) {
-    //             todos.push(json_data[i]);
-    //         }
-
-    //         update_task_list();
-
-    //     });
 
     const response = await fetch("tasks.json");
     const json_data = await response.json();
