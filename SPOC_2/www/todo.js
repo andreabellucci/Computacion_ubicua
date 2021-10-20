@@ -136,3 +136,31 @@ function update_task_list() {
     // adds the events to the task list finally
     task_list.innerHTML = html_complete_tasks_list;
 }
+
+
+// bloque para el uso de controles táctiles
+
+// let start_x = 0;
+// let end_x = 0;
+// let start_time = 0;
+// const TIME_THRESHOLD = 200;
+// const SPAEC_THRESHOLD = 200;
+
+// document.addEventListener("touchstart", function (e) {
+//     e.preventDefault();
+//     start_x = e.targetTouches[0].screenX;
+//     start_time = e.timeStamp;
+// }, { passive: false });
+
+// document.addEventListener("touchmove", function (e) {
+//     e.preventDefault();
+//     end_x = e.changedTouches[0].screenX;
+// }, { passive: false });
+
+// document.addEventListener("touchend", function (e) {
+//     e.preventDefault();
+//     end_time = e.timeStamp;
+//     if (end_time - start_time < TIME_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
+//         alert("test");
+//     }
+// });
