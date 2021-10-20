@@ -9,6 +9,44 @@ let input_task = document.getElementById('input_task');
 let add_button = document.getElementById('add_button');
 let search_filter = document.getElementById('search_filter');
 
+// bloque para el uso de controles táctiles
+let start_x = 0;
+let end_x = 0;
+let start_time = 0;
+const TIME_SLIDE_THRESHOLD = 500;
+const TIME_HOLD_THRESHOLD = 2000;
+const SPACE_THRESHOLD = 100;
+
+task_list.addEventListener("touchstart", function (e) {
+    e.preventDefault();
+    start_x = e.targetTouches[0].screenX;
+    start_time = e.timeStamp;
+}, { passive: false });
+
+task_list.addEventListener("touchmove", function (e) {
+    e.preventDefault();
+    end_x = e.changedTouches[0].screenX;
+}, { passive: false });
+
+task_list.addEventListener("touchend", function (e) {
+    e.preventDefault();
+    end_time = e.timeStamp;
+    if (end_time - start_time < TIME_SLIDE_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
+        var target_task = e.changedTouches[0];
+        // extract the index of the selected task
+        var task_index = target_task.target.id.match(/\d+/)[0];
+        remove(task_index);
+    }
+
+    if (end_time - start_time > TIME_HOLD_THRESHOLD && end_x - start_x < SPACE_THRESHOLD) {
+        var target_task = e.changedTouches[0];
+        // extract the index of the selected task
+        var task_index = target_task.target.id.match(/\d+/)[0];
+        done(task_index);
+    }
+
+});
+
 // initial tasks
 window.onload = load_tasks();
 
@@ -119,13 +157,13 @@ function update_task_list() {
     for (let i = 0; i < todos.length; i++) {
         let html_to_append = "";
         if (todos[i].done) {
-            html_to_append = "<div class='single_task_container' id='task_n_" + i + "' ondblclick='remove(" + i + ")'>"
-                + "<input type='checkbox' " + completed_task + " id='task_completed_n_" + i + "' onclick='done(" + i + ")'>"
+            html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
+                + "<input type='checkbox' " + completed_task + " id='task_completed_n_" + i + "'>"
                 + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
                 + "</div>";
         } else {
-            html_to_append = "<div class='single_task_container' id='task_n_" + i + "' ondblclick='remove(" + i + ")'>"
-                + "<input type='checkbox' id='task_completed_n_" + i + "' onclick='done(" + i + ")'>"
+            html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
+                + "<input type='checkbox' id='task_completed_n_" + i + "'>"
                 + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
                 + "</div>";
         }
@@ -136,31 +174,3 @@ function update_task_list() {
     // adds the events to the task list finally
     task_list.innerHTML = html_complete_tasks_list;
 }
-
-
-// bloque para el uso de controles táctiles
-
-// let start_x = 0;
-// let end_x = 0;
-// let start_time = 0;
-// const TIME_THRESHOLD = 200;
-// const SPAEC_THRESHOLD = 200;
-
-// document.addEventListener("touchstart", function (e) {
-//     e.preventDefault();
-//     start_x = e.targetTouches[0].screenX;
-//     start_time = e.timeStamp;
-// }, { passive: false });
-
-// document.addEventListener("touchmove", function (e) {
-//     e.preventDefault();
-//     end_x = e.changedTouches[0].screenX;
-// }, { passive: false });
-
-// document.addEventListener("touchend", function (e) {
-//     e.preventDefault();
-//     end_time = e.timeStamp;
-//     if (end_time - start_time < TIME_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
-//         alert("test");
-//     }
-// });
