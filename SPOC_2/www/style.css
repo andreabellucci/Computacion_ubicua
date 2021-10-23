@@ -6,7 +6,7 @@
 
 h1 {
     font-family: "Indie Flower";
-    font-size: 24px;
+    font-size: 26px;
     font-style: normal;
     font-variant: normal;
     font-weight: 700;
@@ -15,18 +15,9 @@ h1 {
     margin: 2%;
 }
 
-h3 {
-    font-family: "Indie Flower";
-    font-size: 14px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 700;
-    line-height: 15.4px;
-}
-
 p {
     font-family: "Indie Flower";
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-variant: normal;
     font-weight: 400;
@@ -55,6 +46,10 @@ pre {
 .single_task_container {
     display: inline-flex;
     margin: 1%;
+}
+
+.task_check {
+    pointer-events: none;
 }
 
 body {
@@ -92,7 +87,7 @@ body {
     margin: 2%;
 }
 
-#search_div input{
+#search_div input {
     width: 97%;
     overflow: hidden;
     padding-left: 2%;
