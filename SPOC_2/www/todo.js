@@ -9,12 +9,12 @@ let input_task = document.getElementById('input_task');
 let add_button = document.getElementById('add_button');
 let search_filter = document.getElementById('search_filter');
 
-// bloque para el uso de controles táctiles
+// touch control block
 let start_x = 0;
 let end_x = 0;
 let start_time = 0;
-const TIME_SLIDE_THRESHOLD = 500;
-const TIME_HOLD_THRESHOLD = 2000;
+const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
+const TIME_HOLD_THRESHOLD = 2000; // Timer for Hold action (2 seconds or more)
 const SPACE_THRESHOLD = 100;
 
 task_list.addEventListener("touchstart", function (e) {
@@ -31,6 +31,8 @@ task_list.addEventListener("touchmove", function (e) {
 task_list.addEventListener("touchend", function (e) {
     e.preventDefault();
     end_time = e.timeStamp;
+
+    // If this sentence is true, that means you've performed a SLIDE action
     if (end_time - start_time < TIME_SLIDE_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
         var target_task = e.changedTouches[0];
         // extract the index of the selected task
@@ -38,6 +40,7 @@ task_list.addEventListener("touchend", function (e) {
         remove(task_index);
     }
 
+    // If this sentence is true, that means you've performed a HOLD action
     if (end_time - start_time > TIME_HOLD_THRESHOLD && end_x - start_x < SPACE_THRESHOLD) {
         var target_task = e.changedTouches[0];
         // extract the index of the selected task

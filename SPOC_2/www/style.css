@@ -2,18 +2,18 @@
     margin: 0;
     padding: 0;
     font-family: Indie Flower;
+    font-size: 16px;
 }
 
 h1 {
     font-family: "Indie Flower";
-    font-size: 32px;
+    font-size: 34px;
     font-style: normal;
     font-variant: normal;
     font-weight: 700;
     line-height: 26.4px;
     text-align: center;
-    margin: 4%;
-
+    margin: 4% 4% 5% 4%;
 }
 
 p {
@@ -26,27 +26,10 @@ p {
     margin-left: 2%;
 }
 
-blockquote {
-    font-family: "Indie Flower";
-    font-size: 21px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 400;
-    line-height: 30px;
-}
-
-pre {
-    font-family: "Indie Flower";
-    font-size: 13px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 400;
-    line-height: 18.5714px;
-}
-
 .single_task_container {
     display: inline-flex;
     margin: 1%;
+    padding: 1%;
 }
 
 .task_check {
@@ -68,16 +51,25 @@ body {
 
 #input_div {
     margin: 2%;
+    display: flex;
 }
 
 #input_div button {
     float: right;
-    width: 15%;
+    width: -webkit-fit-content;
+    height: -webkit-fit-content;
+    width: -moz-fit-content;
+    height: -moz-fit-content;
+    padding-left: 1%;
+    padding-right: 1%;
+    margin-left: 1%;
+    white-space: nowrap;
 }
 
 #input_div input {
-    width: 80%;
+    /* width: 70%; */
     padding-left: 2%;
+    width: 100%;
 }
 
 #app_container {
