@@ -53,7 +53,6 @@ task_list.addEventListener("touchend", function (e) {
         var task_index = target_task.target.id.match(/\d+/)[0];
         remove(task_index);
     }
-
 });
 
 // initial tasks
@@ -155,7 +154,6 @@ async function load_tasks() {
     }
 
     update_task_list();
-
 }
 
 // auxiliar function that finally prints the list on the page
