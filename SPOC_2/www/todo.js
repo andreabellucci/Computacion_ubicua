@@ -13,6 +13,7 @@ let search_filter = document.getElementById('search_filter');
 let start_x = 0;
 let end_x = 0;
 let start_time = 0;
+let start_hold;
 const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
 const TIME_HOLD_THRESHOLD = 2000; // Timer for Hold action (2 seconds or more)
 const SPACE_THRESHOLD = 100;
@@ -21,6 +22,15 @@ task_list.addEventListener("touchstart", function (e) {
     e.preventDefault();
     start_x = e.targetTouches[0].screenX;
     start_time = e.timeStamp;
+
+    // if you keep your finger at the task, it will be erased two seconds after
+    start_hold = setTimeout(function () {
+        var target_task = e.changedTouches[0];
+        // extract the index of the selected task
+        var task_index = target_task.target.id.match(/\d+/)[0];
+        done(task_index);
+    }, 2000);
+
 }, { passive: false });
 
 task_list.addEventListener("touchmove", function (e) {
@@ -29,6 +39,10 @@ task_list.addEventListener("touchmove", function (e) {
 }, { passive: false });
 
 task_list.addEventListener("touchend", function (e) {
+
+    // clear the timeout that activates hold action
+    clearTimeout(start_hold);
+
     e.preventDefault();
     end_time = e.timeStamp;
 
@@ -38,14 +52,6 @@ task_list.addEventListener("touchend", function (e) {
         // extract the index of the selected task
         var task_index = target_task.target.id.match(/\d+/)[0];
         remove(task_index);
-    }
-
-    // If this sentence is true, that means you've performed a HOLD action
-    if (end_time - start_time > TIME_HOLD_THRESHOLD && end_x - start_x < SPACE_THRESHOLD) {
-        var target_task = e.changedTouches[0];
-        // extract the index of the selected task
-        var task_index = target_task.target.id.match(/\d+/)[0];
-        done(task_index);
     }
 
 });
