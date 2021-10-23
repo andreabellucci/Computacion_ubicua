@@ -1,0 +1,25 @@
+{
+  "name": "spoc_2",
+  "version": "1.0.0",
+  "description": "A simple task list made using node, javascript and html",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^3.0.0",
+    "socket.io": "^4.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Big-N0thing/Computacion_ubicua.git"
+  },
+  "author": "Noé Fuente Peñalver",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Big-N0thing/Computacion_ubicua/issues"
+  },
+  "homepage": "https://github.com/Big-N0thing/Computacion_ubicua#readme"
+}
