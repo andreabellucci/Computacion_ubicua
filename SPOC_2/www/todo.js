@@ -159,7 +159,7 @@ function update_task_list() {
         if (todos[i].done) {
             html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
                 + "<input type='checkbox' " + completed_task + " class='task_check' id='task_completed_n_" + i + "'>"
-                + "<p id='task_text_n_" + i + "'>" + todos[i].title + "</p>"
+                + "<p id='task_text_n_" + i + "' style='text-decoration:line-through;'>" + todos[i].title + "</p>"
                 + "</div>";
         } else {
             html_to_append = "<div class='single_task_container' id='task_n_" + i + "'>"
