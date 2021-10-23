@@ -15,7 +15,6 @@ let end_x = 0;
 let start_time = 0;
 let start_hold;
 const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
-const TIME_HOLD_THRESHOLD = 2000; // Timer for Hold action (2 seconds or more)
 const SPACE_THRESHOLD = 100;
 
 task_list.addEventListener("touchstart", function (e) {
