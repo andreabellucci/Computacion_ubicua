@@ -127,17 +127,17 @@ function filter() {
             var div_to_show = document.getElementById(id);
             div_to_show.style.display = "";
         }
-    }
+    } else {
+        for (let i = 0; i < p.length; i++) {
 
-    for (let i = 0; i < p.length; i++) {
+            var id = 'task_n_' + i;
+            var div_to_show = document.getElementById(id);
 
-        var id = 'task_n_' + i;
-        var div_to_show = document.getElementById(id);
-
-        if (p[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-            div_to_show.style.display = "";
-        } else {
-            div_to_show.style.display = "none";
+            if (p[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                div_to_show.style.display = "";
+            } else {
+                div_to_show.style.display = "none";
+            }
         }
     }
 }
