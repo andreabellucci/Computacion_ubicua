@@ -5,11 +5,8 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const fs = require('fs');
 
-// present the users the correct web page
-app.use(express.static('www'));
-
 io.on("connection", function (socket) {
-  console.log("[NEW CLIENT CONNECTED...] SOCKET.ID: " + socket.id);
+  console.log("[NEW USER CONNECTED] SOCKET.ID: " + socket.id);
 
   socket.on("mod_task", function (message) {
     console.log("[UPDATING TASKS STORAGE...]");

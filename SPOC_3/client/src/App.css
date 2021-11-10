@@ -36,3 +36,108 @@
     transform: rotate(360deg);
   }
 }
+
+/* 
+  **********************************************************
+  **********************************************************
+  **********************************************************
+  **********************************************************
+*/
+
+* {
+  font-family: "Dosis";
+  font-style: normal;
+  src: local("Dosis Regular"), local("Dosis-Regular"), url("http://fonts.gstatic.com/s/dosis/v4/xIAtSaglM8LZOYdGmG1JqQ.woff") format("woff");
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+#root .row {
+  display: table-row;
+}
+
+#root .cell {
+  display: table-cell;
+}
+
+#header_div {
+  display: flex;
+  align-items: center;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(220deg, rgba(2, 0, 36, 1) 0%, rgba(220, 220, 242, 1) 0%, rgba(146, 237, 255, 1) 100%);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  height: 50%;
+}
+
+#header_div .cell {
+  vertical-align: top;
+}
+
+#header_div img {
+  float: left;
+  width: 8%;
+  height: 8%;
+  margin: 3%;
+}
+
+#header_div h1 {
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 26.4px;
+  text-align: center;
+  margin: 4% 4% 4% 0%;
+  height: 100%;
+}
+
+#chat_container {
+  background-color: red;
+  overflow: scroll;
+  height: 50%;
+}
+
+#chat_container .cell {
+  vertical-align: middle;
+}
+
+#footer_div {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  background-color: purple;
+}
+
+#footer_div .cell {
+  vertical-align: bottom;
+}
+
+#input_submit {
+  float: right;
+  width: -webkit-fit-content;
+  height: -webkit-fit-content;
+  width: -moz-fit-content;
+  height: -moz-fit-content;
+  padding-left: 1%;
+  padding-right: 1%;
+  margin-left: 1%;
+  white-space: nowrap;
+}
+
+#input_message {
+  width: 70%;
+  padding-left: 2%;
+  width: 100%;
+}
