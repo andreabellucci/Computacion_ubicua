@@ -1,0 +1,125 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 
+  **********************************************************
+  **********************************************************
+  **********************************************************
+  **********************************************************
+*/
+
+* {
+  font-family: "Dosis";
+  font-style: normal;
+  src: local("Dosis Regular"), local("Dosis-Regular"), url("http://fonts.gstatic.com/s/dosis/v4/xIAtSaglM8LZOYdGmG1JqQ.woff") format("woff");
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-image: url("https://t3.ftcdn.net/jpg/01/99/79/88/240_F_199798806_PAFfWGapie6Mk8igqKHbhIIa9LwQcvQr.jpg");
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  background: rgba(72, 217, 243, 0.3)
+}
+
+#header_div {
+  display: flex;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(241deg, rgba(2, 0, 36, 1) 0%, rgba(164, 164, 247, 1) 0%, rgba(11, 186, 221, 1) 100%);
+  box-shadow: rgba(0, 0, 0, 0.384) 0px 3px 8px;
+  height: 7.5vh;
+}
+
+#header_div img {
+  float: left;
+  width: 4vh;
+  height: 4vh;
+  margin: 3%;
+}
+
+#header_div h1 {
+  font-size: 30px;
+  font-weight: 520;
+  line-height: 26.4px;
+  text-align: center;
+  margin: 3% 0% 0% 0%;
+  height: 100%;
+  color: #eeeeee;
+  text-shadow: -1px -1px 1px rgba(255, 255, 255, .1), 1px 1px 1px rgba(0, 0, 0, 0.582);
+}
+
+#chat_container {
+  background-color: transparent;
+  overflow: scroll;
+  height: 85.5vh;
+}
+
+#footer_div {
+  display: flex;
+  width: 100%;
+  background-color: transparent;
+  height: 7vh;
+}
+
+#input_submit {
+  float: right;
+  padding-left: 1%;
+  padding-right: 1%;
+  margin-left: 1%;
+  white-space: nowrap;
+  width: 12%;
+  border-radius: 100px;
+  margin: 1% 1% 1% 1%;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+}
+
+#input_message {
+  width: 100%;
+  padding-left: 4%;
+  margin: 1% 1% 1% 1%;
+  border-radius: 100px;
+  text-align: center;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+}
