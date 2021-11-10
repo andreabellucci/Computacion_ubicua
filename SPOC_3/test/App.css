@@ -64,13 +64,13 @@ body {
   background: rgba(72, 217, 243, 0.3)
 }
 
-#header_div {
+header {
   display: flex;
   background: rgb(2, 0, 36);
   background: linear-gradient(241deg, rgba(2, 0, 36, 1) 0%, rgba(164, 164, 247, 1) 0%, rgba(11, 186, 221, 1) 100%);
   box-shadow: rgba(0, 0, 0, 0.384) 0px 3px 8px;
   height: 7.5vh;
-  overflow: auto;
+  overflow: hidden;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -80,14 +80,14 @@ body {
   align-items: center;
 }
 
-#header_div img {
+header img {
   float: left;
   width: 5vh;
   height: 5vh;
   padding: 3%;
 }
 
-#header_div div p {
+header div p {
   font-size: 33px;
   font-weight: 520;
   line-height: 26.4px;
@@ -100,14 +100,14 @@ body {
 #chat_container {
   background-color: transparent;
   overflow: scroll;
-  height: 85.5vh;
+  height: 84.5vh;
 }
 
-#footer_div {
+footer {
   display: flex;
   width: 100%;
   background-color: transparent;
-  height: 7vh;
+  height: 8vh;
 }
 
 #input_submit {
@@ -117,15 +117,15 @@ body {
   margin-left: 1%;
   white-space: nowrap;
   width: 12%;
-  border-radius: 10px;
-  margin: 1% 1% 1% 1%;
+  border-radius: 7px;
+  margin: 1% 2% 2% 1%;
   border: 2px solid rgba(0, 0, 0, 0.568);
 }
 
 #input_message {
   width: 100%;
   padding-left: 4%;
-  margin: 1% 1% 1% 1%;
-  border-radius: 10px;
+  margin: 1% 1% 2% 2%;
+  border-radius: 7px;
   border: 2px solid rgba(0, 0, 0, 0.568);
 }
