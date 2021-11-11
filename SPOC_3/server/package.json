@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Big-N0thing/Computacion_ubicua#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "project-name-generator": "^2.1.9",
     "socket.io": "^4.3.2"
   }
 }
