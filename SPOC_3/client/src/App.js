@@ -8,30 +8,52 @@ import GlobalChat from "./components/ConnectedUserList";
 import ConnectedUserList from "./components/GlobalChat";
 import PrivateChat from "./components/PrivateChat";
 
+
 function App() {
+
   // const [message, setMessage] = useState("");
   const [socket, setSocket] = useState(io("localhost:3001"));
   const [username, setUsername] = useState("");
-  const [globalChat, setGlobalChat] = useState("");
-  const [currentState, setCurrentState] = useState("global_chat");
+  const [globalChat, setGlobalChat] = useState();
+  // const [currentState, setCurrentState] = useState("global_chat");
 
-  // Start the comms with the server
+  useEffect(() => {
+    setSocket(() => {
+      return io("localhost:3001");
+    });
+
+    // The server returns our new username
+    socket.on("new_username", function (myUserName) {
+      setUsername(myUserName);
+    });
+
+    // A new GLOBAL message comes from the server
+    socket.on("broadcast_public_message", function (newGLobalMessage) {
+      let newHtmlMessage = buildTextMessage(newGLobalMessage);
+      setGlobalChat(newHtmlMessage);
+    });
+
+
+  }, []);
+
+  /* 
+ * BLOCK 1
+ * Socket EVENT declaration
+*/
+  // // Start the comms with the server
   // useEffect(() => {
-  //   setSocket(() => {
-  //     return io("localhost:3001");
-  //   });
+  //   if (socket == null) {
+  //     setSocket(() => {
+  //       return io("localhost:3001");
+  //     });
+  //   }
   // }, []);
 
-  // The server returns our new username
-  socket.on("new_username", function (myUserName) {
-    setUsername(myUserName);
-  });
 
-  // A new GLOBAL message comes from the server
-  socket.on("broadcast_public_message", function (newGLobalMessage) {
-    
-  });
-
+  /* 
+   * BLOCK 2
+   * Application FUNCTIONS
+  */
   function sendPublicMessage() {
     // Extract the message from the box and clear it
     let message = document.getElementById("input_message").value;
@@ -42,11 +64,40 @@ function App() {
     }
   }
 
-  // Function that changes the pages that the app shows
-  function changeAppState() {
-    setCurrentState("");
+  // // Function that changes the pages that the app shows
+  // function changeAppState() {
+  //   setCurrentState("");
+  // }
+
+
+  /* 
+   * BLOCK 3
+   * Auxiliar FUNCTIONS
+  */
+  function buildTextMessage(message) {
+    if (message.username == username)
+      return (
+        <div class="my_text_message" >
+          <div class="text_message_header">
+            <p class="text_message_username">{message.username}</p>
+            <p class="text_messagen_datetime">{message.datetime}</p>
+          </div>
+          <div class="text_message_content"><p>{message.text}</p></div>
+        </div>
+      );
+    else
+      return (
+        <div class="ur_text_message" >
+          <div class="text_message_header">
+            <p class="text_message_username">{message.username}</p>
+            <p class="text_messagen_datetime">{message.datetime}</p>
+          </div>
+          <div class="text_message_content"><p>{message.text}</p></div>
+        </div>
+      );
   }
 
+  // Here we build the entire app
   return (
     <div>
       <header id="header_div">
@@ -56,11 +107,11 @@ function App() {
         </div>
       </header>
 
-      <div id="chat_container"></div>
+      <div id="chat_container">{globalChat}</div>
 
       <footer id="footer_div">
         <input type="text" id="input_message" placeholder="message..." />
-        <button onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
+        <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
       </footer>
     </div>
   );
@@ -99,3 +150,4 @@ socket.on("message_evt", function(message){
       // function getMessageText(e) {
   //   setMessage(e.target.value);
   // }
+
