@@ -129,3 +129,42 @@ footer {
   border-radius: 7px;
   border: 2px solid rgba(0, 0, 0, 0.568);
 }
+
+.my_text_message {
+  margin: 2%;
+  margin-left: 7%;
+  padding: 1%;
+  border-radius: 7px;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+  background: rgb(2, 0, 36);
+  background: linear-gradient(215deg, rgba(2, 0, 36, 1) 0%, rgba(214, 255, 200, 1) 0%, rgba(138, 236, 255, 1) 100%);
+}
+
+.ur_text_message {
+  margin: 2%;
+  margin-right: 7%;
+  padding: 1%;
+  border-radius: 7px;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+  background: rgb(2, 0, 36);
+  background: linear-gradient(129deg, rgba(2, 0, 36, 1) 0%, rgba(255, 251, 186, 1) 0%, rgba(255, 194, 53, 1) 100%);
+}
+
+.text_message_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.text_message_username {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.text_messagen_datetime {
+  font-size: 16px;
+  font-style: italic;
+}
+
+.text_message_content p {
+  font-size: 17px;
+}

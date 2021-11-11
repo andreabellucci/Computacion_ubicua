@@ -10,21 +10,36 @@ import PrivateChat from "./components/PrivateChat";
 
 function App() {
   // const [message, setMessage] = useState("");
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(io("localhost:3001"));
+  const [username, setUsername] = useState("");
+  const [globalChat, setGlobalChat] = useState("");
   const [currentState, setCurrentState] = useState("global_chat");
 
-  useEffect(() => {
-    setSocket(() => {
-      return io("localhost:3001");
-    });
-  }, []);
+  // Start the comms with the server
+  // useEffect(() => {
+  //   setSocket(() => {
+  //     return io("localhost:3001");
+  //   });
+  // }, []);
+
+  // The server returns our new username
+  socket.on("new_username", function (myUserName) {
+    setUsername(myUserName);
+  });
+
+  // A new GLOBAL message comes from the server
+  socket.on("broadcast_public_message", function (newGLobalMessage) {
+    
+  });
 
   function sendPublicMessage() {
     // Extract the message from the box and clear it
     let message = document.getElementById("input_message").value;
-    document.getElementById("input_message").value = "";
-
-    socket.emit("send_public_message", { msg: message });
+    if (message != "") {
+      document.getElementById("input_message").value = "";
+      let newGlobalMessage = { from: username, text: message, datetime: new Date().toLocaleString() };
+      socket.emit("send_public_message", newGlobalMessage);
+    }
   }
 
   // Function that changes the pages that the app shows
@@ -32,19 +47,7 @@ function App() {
     setCurrentState("");
   }
 
-  // function getMessageText(e) {
-  //   setMessage(e.target.value);
-  // }
-
   return (
-    // <main>
-    //   <Routes>
-    //     <Route path="/" component={GlobalChat} exact />
-    //     <Route path="/UsersConnected" component={ConnectedUserList} />
-    //     <Route path="/PrivateChat" component={PrivateChat} />
-    //   </Routes>
-    // </main>
-
     <div>
       <header id="header_div">
         <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
@@ -82,3 +85,17 @@ socket.on("message_evt", function(message){
 });
 */
 
+
+
+    // <main>
+    //   <Routes>
+    //     <Route path="/" component={GlobalChat} exact />
+    //     <Route path="/UsersConnected" component={ConnectedUserList} />
+    //     <Route path="/PrivateChat" component={PrivateChat} />
+    //   </Routes>
+    // </main>
+
+
+      // function getMessageText(e) {
+  //   setMessage(e.target.value);
+  // }
