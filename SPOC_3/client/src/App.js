@@ -12,8 +12,8 @@ import PrivateChat from "./components/PrivateChat";
 const generator = require('project-name-generator');
 
 function App() {
-  const [username, setUsername] = useState(null);
-  const [globalChat, setGlobalChat] = useState([]);
+  const [username, setUsername] = useState("antonio");
+  const [publicMessageStack, setPublicMessageStack] = useState([]);
   const [socket, setSocket] = useState(null);
 
   /* 
@@ -23,6 +23,7 @@ function App() {
   useEffect(() => {
     const socket = io("localhost:3001");
 
+    // When the socket connects to the server
     socket.on("connect", () => {
       const newUserName = generator({ words: 2, number: false }).dashed;
       setUsername(newUserName);
@@ -31,8 +32,11 @@ function App() {
 
     // A new GLOBAL message comes from the server
     socket.on("send_public_message", function (message) {
-      let formattedMessage = buildTextMessage(message);
-      setGlobalChat(formattedMessage);
+      // let formattedMessage = buildTextMessage(message);
+      console.log(publicMessageStack);
+      let aux = publicMessageStack;
+      aux.push(message);
+      setPublicMessageStack(aux);
     });
 
     setSocket(socket);
@@ -57,27 +61,16 @@ function App() {
    * Auxiliar FUNCTIONS
   */
   function buildTextMessage(message) {
-    console.log("Mi nombre es.... " + username);
-    if (username === message.from)
-      return (
-        <div className="my_text_message" >
-          <div className="text_message_header">
-            <p className="text_message_username">{message.from}</p>
-            <p className="text_messagen_datetime">{message.datetime}</p>
-          </div>
-          <div className="text_message_content"><p>{message.text}</p></div>
+    console.log(socket.id);
+    return (
+      <div className={username == message.from ? 'my_text_message' : 'ur_text_message'}>
+        <div className="text_message_header">
+          <p className="text_message_username">{message.from}</p>
+          <p className="text_messagen_datetime">{message.datetime}</p>
         </div>
-      );
-    else
-      return (
-        <div className="ur_text_message" >
-          <div className="text_message_header">
-            <p className="text_message_username">{message.from}</p>
-            <p className="text_messagen_datetime">{message.datetime}</p>
-          </div>
-          <div className="text_message_content"><p>{message.text}</p></div>
-        </div>
-      );
+        <div className="text_message_content"><p>{message.text}</p></div>
+      </div>
+    );
   }
 
   // Here we build the entire app
@@ -86,12 +79,23 @@ function App() {
       <header id="header_div">
         <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
         <div>
-          <p>sendertext</p>
           <p>{username}</p>
         </div>
       </header>
 
-      <div id="chat_container">{globalChat}</div>
+      <div id="chat_container">
+        {publicMessageStack.map(function (msg) {
+          return (
+            <div className={username == msg.from ? 'my_text_message' : 'ur_text_message'}>
+              <div className="text_message_header">
+                <p className="text_message_username">{msg.from}</p>
+                <p className="text_messagen_datetime">{msg.datetime}</p>
+              </div>
+              <div className="text_message_content"><p>{msg.text}</p></div>
+            </div>
+          );
+        })}
+      </div>
 
       <footer id="footer_div">
         <input type="text" id="input_message" placeholder="message..." />
