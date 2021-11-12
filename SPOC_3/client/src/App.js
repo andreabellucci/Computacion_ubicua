@@ -22,6 +22,7 @@ function App() {
       return io("localhost:3001");
     });
 
+    // ESTA MOVIDA HAY QUE PEDÍRSELA AL SERVER
     // The server returns our new username
     socket.on("new_username", function (myUserName) {
       setUsername(myUserName);
