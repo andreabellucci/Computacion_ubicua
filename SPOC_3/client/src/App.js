@@ -5,9 +5,9 @@ import React from "react";
 
 
 // COMPONENTS
-import GlobalChat from "./components/ConnectedUserList";
-import ConnectedUserList from "./components/GlobalChat";
-import PrivateChat from "./components/PrivateChat";
+// import GlobalChat from "./components/ConnectedUserList";
+// import ConnectedUserList from "./components/GlobalChat";
+// import PrivateChat from "./components/PrivateChat";
 
 const generator = require('project-name-generator');
 
@@ -31,12 +31,9 @@ function App() {
     });
 
     // A new GLOBAL message comes from the server
-    socket.on("send_public_message", function (message) {
-      // let formattedMessage = buildTextMessage(message);
+    socket.on("send_public_message", (message) => {
+      setPublicMessageStack([...publicMessageStack, message]);
       console.log(publicMessageStack);
-      let aux = publicMessageStack;
-      aux.push(message);
-      setPublicMessageStack(aux);
     });
 
     setSocket(socket);
@@ -56,42 +53,25 @@ function App() {
     }
   }
 
-  /* 
-   * BLOCK 3
-   * Auxiliar FUNCTIONS
-  */
-  function buildTextMessage(message) {
-    console.log(socket.id);
-    return (
-      <div className={username == message.from ? 'my_text_message' : 'ur_text_message'}>
-        <div className="text_message_header">
-          <p className="text_message_username">{message.from}</p>
-          <p className="text_messagen_datetime">{message.datetime}</p>
-        </div>
-        <div className="text_message_content"><p>{message.text}</p></div>
-      </div>
-    );
-  }
-
   // Here we build the entire app
   return (
     <div>
       <header id="header_div">
         <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
         <div>
-          <p>{username}</p>
+          <p>Global Chat</p>
         </div>
       </header>
 
       <div id="chat_container">
-        {publicMessageStack.map(function (msg) {
+        {publicMessageStack.map((val, key) => {
           return (
-            <div className={username == msg.from ? 'my_text_message' : 'ur_text_message'}>
+            <div key={key} className={username == val.from ? 'my_text_message' : 'ur_text_message'}>
               <div className="text_message_header">
-                <p className="text_message_username">{msg.from}</p>
-                <p className="text_messagen_datetime">{msg.datetime}</p>
+                <p className="text_message_username">{val.from}</p>
+                <p className="text_messagen_datetime">{val.datetime}</p>
               </div>
-              <div className="text_message_content"><p>{msg.text}</p></div>
+              <div className="text_message_content"><p>{val.text}</p></div>
             </div>
           );
         })}

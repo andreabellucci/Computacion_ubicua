@@ -1,3 +1,5 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "editor.fontFamily": "Roboto, Consolas, 'Courier New', monospace",
+    "editor.codeLensFontFamily": "Roboto"
 }
