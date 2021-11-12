@@ -1,37 +1,42 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
-import { SOCKET } from "./components/Socket"; // SOCKET is a constant from another file, that is to prevent multiple connections
+import io from "socket.io-client";
 import React from "react";
+
 
 // COMPONENTS
 import GlobalChat from "./components/ConnectedUserList";
 import ConnectedUserList from "./components/GlobalChat";
 import PrivateChat from "./components/PrivateChat";
 
+const generator = require('project-name-generator');
 
 function App() {
-
-  const [username, setUsername] = useState("");
-  const [globalChat, setGlobalChat] = useState();
+  const [username, setUsername] = useState(null);
+  const [globalChat, setGlobalChat] = useState([]);
+  const [socket, setSocket] = useState(null);
 
   /* 
   * BLOCK 1
   * Socket EVENT declaration
   */
   useEffect(() => {
-    // The server gives us our username on connect
-    SOCKET.on("new_username", function (myUserName) {
-      setUsername(myUserName);
+    const socket = io("localhost:3001");
+
+    socket.on("connect", () => {
+      const newUserName = generator({ words: 2, number: false }).dashed;
+      setUsername(newUserName);
+      socket.emit("register_user", newUserName);
     });
 
     // A new GLOBAL message comes from the server
-    SOCKET.on("broadcast_public_message", function (newGLobalMessage) {
-      console.log("me acaba de llegar un mensage global que cosas");
-      let newHtmlMessage = buildTextMessage(newGLobalMessage);
-      setGlobalChat(newHtmlMessage);
+    socket.on("send_public_message", function (message) {
+      let formattedMessage = buildTextMessage(message);
+      setGlobalChat(formattedMessage);
     });
-  }, [SOCKET]);
 
+    setSocket(socket);
+  }, []);
 
   /* 
    * BLOCK 2
@@ -43,7 +48,7 @@ function App() {
     if (message != "") {
       document.getElementById("input_message").value = "";
       let newGlobalMessage = { from: username, text: message, datetime: new Date().toLocaleString() };
-      SOCKET.emit("send_public_message", newGlobalMessage);
+      socket.emit("broadcast_public_message", newGlobalMessage);
     }
   }
 
@@ -52,11 +57,12 @@ function App() {
    * Auxiliar FUNCTIONS
   */
   function buildTextMessage(message) {
-    if (message.username == username)
+    console.log("Mi nombre es.... " + username);
+    if (username === message.from)
       return (
         <div className="my_text_message" >
           <div className="text_message_header">
-            <p className="text_message_username">{message.username}</p>
+            <p className="text_message_username">{message.from}</p>
             <p className="text_messagen_datetime">{message.datetime}</p>
           </div>
           <div className="text_message_content"><p>{message.text}</p></div>
@@ -81,6 +87,7 @@ function App() {
         <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
         <div>
           <p>sendertext</p>
+          <p>{username}</p>
         </div>
       </header>
 
