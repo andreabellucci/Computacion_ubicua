@@ -1,7 +1,9 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import { Route, Routes, Navbar } from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom";
+import ReactDOMServer from "react-dom/server";
 
 // COMPONENTS
 import GlobalChat from "./components/ConnectedUserList";
@@ -12,7 +14,7 @@ import PrivateChat from "./components/PrivateChat";
 function App() {
 
   // const [message, setMessage] = useState("");
-  const [socket, setSocket] = useState(io("localhost:3001"));
+  const [socket, setSocket] = useState(io("localhost:3001", { autoConnect: false }));
   const [username, setUsername] = useState("");
   const [globalChat, setGlobalChat] = useState();
   // const [currentState, setCurrentState] = useState("global_chat");
@@ -21,9 +23,10 @@ function App() {
     setSocket(() => {
       return io("localhost:3001");
     });
+  }, []);
 
-    // ESTA MOVIDA HAY QUE PEDÍRSELA AL SERVER
-    // The server returns our new username
+  useEffect(() => {
+    // The server gives us our username on connect
     socket.on("new_username", function (myUserName) {
       setUsername(myUserName);
     });
@@ -33,9 +36,8 @@ function App() {
       let newHtmlMessage = buildTextMessage(newGLobalMessage);
       setGlobalChat(newHtmlMessage);
     });
+  }, [socket]);
 
-
-  }, []);
 
   /* 
  * BLOCK 1
@@ -56,6 +58,7 @@ function App() {
    * Application FUNCTIONS
   */
   function sendPublicMessage() {
+    console.log(username);
     // Extract the message from the box and clear it
     let message = document.getElementById("input_message").value;
     if (message != "") {
@@ -78,22 +81,22 @@ function App() {
   function buildTextMessage(message) {
     if (message.username == username)
       return (
-        <div class="my_text_message" >
-          <div class="text_message_header">
-            <p class="text_message_username">{message.username}</p>
-            <p class="text_messagen_datetime">{message.datetime}</p>
+        <div className="my_text_message" >
+          <div className="text_message_header">
+            <p className="text_message_username">{message.username}</p>
+            <p className="text_messagen_datetime">{message.datetime}</p>
           </div>
-          <div class="text_message_content"><p>{message.text}</p></div>
+          <div className="text_message_content"><p>{message.text}</p></div>
         </div>
       );
     else
       return (
-        <div class="ur_text_message" >
-          <div class="text_message_header">
-            <p class="text_message_username">{message.username}</p>
-            <p class="text_messagen_datetime">{message.datetime}</p>
+        <div className="ur_text_message" >
+          <div className="text_message_header">
+            <p className="text_message_username">{message.from}</p>
+            <p className="text_messagen_datetime">{message.datetime}</p>
           </div>
-          <div class="text_message_content"><p>{message.text}</p></div>
+          <div className="text_message_content"><p>{message.text}</p></div>
         </div>
       );
   }
