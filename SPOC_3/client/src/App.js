@@ -1,9 +1,7 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import { SOCKET } from "./components/Socket"; // SOCKET is a constant from another file, that is to prevent multiple connections
 import React from "react";
-import ReactDOM from "react-dom";
-import ReactDOMServer from "react-dom/server";
 
 // COMPONENTS
 import GlobalChat from "./components/ConnectedUserList";
@@ -13,44 +11,26 @@ import PrivateChat from "./components/PrivateChat";
 
 function App() {
 
-  // const [message, setMessage] = useState("");
-  const [socket, setSocket] = useState(io("localhost:3001", { autoConnect: false }));
   const [username, setUsername] = useState("");
   const [globalChat, setGlobalChat] = useState();
-  // const [currentState, setCurrentState] = useState("global_chat");
 
-  useEffect(() => {
-    setSocket(() => {
-      return io("localhost:3001");
-    });
-  }, []);
-
+  /* 
+  * BLOCK 1
+  * Socket EVENT declaration
+  */
   useEffect(() => {
     // The server gives us our username on connect
-    socket.on("new_username", function (myUserName) {
+    SOCKET.on("new_username", function (myUserName) {
       setUsername(myUserName);
     });
 
     // A new GLOBAL message comes from the server
-    socket.on("broadcast_public_message", function (newGLobalMessage) {
+    SOCKET.on("broadcast_public_message", function (newGLobalMessage) {
+      console.log("me acaba de llegar un mensage global que cosas");
       let newHtmlMessage = buildTextMessage(newGLobalMessage);
       setGlobalChat(newHtmlMessage);
     });
-  }, [socket]);
-
-
-  /* 
- * BLOCK 1
- * Socket EVENT declaration
-*/
-  // // Start the comms with the server
-  // useEffect(() => {
-  //   if (socket == null) {
-  //     setSocket(() => {
-  //       return io("localhost:3001");
-  //     });
-  //   }
-  // }, []);
+  }, [SOCKET]);
 
 
   /* 
@@ -58,21 +38,14 @@ function App() {
    * Application FUNCTIONS
   */
   function sendPublicMessage() {
-    console.log(username);
     // Extract the message from the box and clear it
     let message = document.getElementById("input_message").value;
     if (message != "") {
       document.getElementById("input_message").value = "";
       let newGlobalMessage = { from: username, text: message, datetime: new Date().toLocaleString() };
-      socket.emit("send_public_message", newGlobalMessage);
+      SOCKET.emit("send_public_message", newGlobalMessage);
     }
   }
-
-  // // Function that changes the pages that the app shows
-  // function changeAppState() {
-  //   setCurrentState("");
-  // }
-
 
   /* 
    * BLOCK 3
@@ -122,36 +95,3 @@ function App() {
 }
 
 export default App;
-
-/*
-const socket = io();
-const button = document.querySelector("button");
-const input = document.querySelector("input");
-const msg = document.querySelector("#msg");
-
-button.addEventListener("click", function(e) {
-  const text = input.value;
-  //enviarselo al servidor
-  socket.emit("message_evt", {msg: text});
-});
-
-socket.on("message_evt", function(message){
-  msg.innerHTML = message.msg;
-});
-*/
-
-
-
-    // <main>
-    //   <Routes>
-    //     <Route path="/" component={GlobalChat} exact />
-    //     <Route path="/UsersConnected" component={ConnectedUserList} />
-    //     <Route path="/PrivateChat" component={PrivateChat} />
-    //   </Routes>
-    // </main>
-
-
-      // function getMessageText(e) {
-  //   setMessage(e.target.value);
-  // }
-

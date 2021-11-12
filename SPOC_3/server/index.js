@@ -25,8 +25,8 @@ io.on("connection", function (socket) {
   socket.on('disconnect', function () {
     console.log('User: [' + socket.id + "] has been disconnected");
 
-    var rmUsrIndex = user_list.findIndex(this.id == socket.id);
-    allClients.splice(rmUsrIndex, 1);
+    // var rmUsrIndex = user_list.findIndex(this.id == socket.id);
+    // allClients.splice(rmUsrIndex, 1);
   });
 
   // Public message broadcasting
