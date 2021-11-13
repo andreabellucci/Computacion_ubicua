@@ -6,7 +6,7 @@ function GlobalChat(props) {
       <div id="chat_container">
         {props.messageList.map((msg, key) => {
           return (
-            <div key={key} className={props.username == msg.from ? 'my_text_message' : 'ur_text_message'}>
+            <div key={key} className={props.username === msg.from ? 'my_text_message' : 'ur_text_message'}>
               <div className="text_message_header">
                 <p className="text_message_username">{msg.from}</p>
                 <p className="text_messagen_datetime">{msg.datetime}</p>

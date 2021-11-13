@@ -55,7 +55,7 @@ function App() {
   */
   function sendPublicMessage() {
     // Extract the message from the box and clear it
-    if (newMessage != "") {
+    if (newMessage !== "") {
       let newGlobalMessage = { from: username, text: newMessage, datetime: new Date().toLocaleString() };
       socket.emit("broadcast_public_message", newGlobalMessage);
       document.getElementById("input_message").value = "";
@@ -65,7 +65,7 @@ function App() {
 
   function sendPrivateMessage() {
     // Extract the message from the box and clear it
-    if (newMessage != "") {
+    if (newMessage !== "") {
       let newPrivateMessage = { from: username, to: currentPrivateChat, text: newMessage, datetime: new Date().toLocaleString() };
       socket.emit("send_private_message", newPrivateMessage);
       document.getElementById("input_message").value = "";
@@ -88,13 +88,13 @@ function App() {
         <div>
           <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
           <div>
-            {currentView == "global" &&
+            {currentView === "global" &&
               <p>Global Chat</p>
             }
-            {currentView == "users" &&
+            {currentView === "users" &&
               <p>User List</p>
             }
-            {currentView == "private" &&
+            {currentView === "private" &&
               <p>Prv: {currentPrivateChat}</p>
             }
           </div>
@@ -102,27 +102,27 @@ function App() {
         <div id="header_redirection">
           <img onClick={() => changeAppView("global")} src="https://cdn-icons-png.flaticon.com/512/139/139706.png" alt="GlobalChat" />
           <img onClick={() => changeAppView("users")} src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="UserList" />
-          <img onClick={() => changeAppView("private")} src="https://cdn-icons.flaticon.com/png/512/2593/premium/2593656.png?token=exp=1636808934~hmac=9a263504d8a0fd451a7781f24cdc83d8" alt="PrivateChat" />
+          <img onClick={() => changeAppView("private")} src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" alt="PrivateChat" />
         </div>
       </header>
 
-      {currentView == "global" &&
+      {currentView === "global" &&
         <GlobalChat messageList={publicMessageStack} username={username} />
       }
-      {currentView == "users" &&
+      {currentView === "users" &&
         <ConnectedUserList userList={connectedUserList} />
       }
-      {currentView == "private" &&
+      {currentView === "private" &&
         <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} />
       }
 
-      {(currentView == "global" || currentView == "private") &&
+      {(currentView === "global" || currentView === "private") &&
         <footer id="footer_div">
           <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
-          {currentView == "global" &&
+          {currentView === "global" &&
             <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
           }
-          {currentView == "private" &&
+          {currentView === "private" &&
             <input type="submit" onClick={sendPrivateMessage} id="input_submit" value="&#10148;" />
           }
         </footer>
