@@ -17,17 +17,25 @@ io.on("connection", function (socket) {
   socket.on('register_user', function (username) {
     // Make a new user for each one connected
     let new_user = { id: socket.id, username: username }
-    user_list.push();
+    user_list = [...user_list, new_user]
 
     console.log("NEW REGISTER --> ID: [" + new_user.id + "], USERNAME: [" + new_user.username + "]");
+
+    io.emit("update_connected_users_list", user_list);
+    console.log(user_list);
   });
 
   // Handle disconnect
   socket.on('disconnect', function () {
     console.log('User: [' + socket.id + "] has been disconnected");
 
-    // var rmUsrIndex = user_list.findIndex(this.id == socket.id);
-    // allClients.splice(rmUsrIndex, 1);
+    const isUser = (user) => user.id == socket.id;
+
+    let rmUsrIndex = user_list.findIndex(isUser);
+    user_list.splice(rmUsrIndex, 1);
+
+    io.emit("update_connected_users_list", user_list);
+    console.log(user_list);
   });
 
   // Public message broadcasting

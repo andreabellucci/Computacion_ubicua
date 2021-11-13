@@ -5,7 +5,7 @@ function ConnectedUserList(props) {
   return (
     <div>
       <div id="connected_users">
-        {props.usersList && props.usersList.map((val, key) => {
+        {props.usersList.map((val, key) => {
           return (
             <div key={key} className="connected_user_container">
               <img

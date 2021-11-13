@@ -16,9 +16,9 @@ function App() {
   const [username, setUsername] = useState("");
   const [publicMessageStack, setPublicMessageStack] = useState([]);
   const [privateMessageStack, setPrivateMessageStack] = useState([]);
-  const [connectedUserList, setconnectedUserList] = useState([]);
+  const [connectedUserList, setConnectedUserList] = useState([]);
   const [currentView, setCurrentView] = useState("global"); // global, private, users
-  const [currentPrivateChat, setCurrentPrivateChat] = useState(""); // Who youre talking in private at the moment
+  const [currentPrivateChat, setCurrentPrivateChat] = useState(""); // Who you're talking in private at the moment
   const [newMessage, setNewMessage] = useState("");
 
 
@@ -44,6 +44,11 @@ function App() {
     // A new GLOBAL message comes from the server
     socket.on("deliver_private_message", (message) => {
       setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, message]);
+    });
+
+    // A new GLOBAL message comes from the server
+    socket.on("update_connected_users_list", (userList) => {
+      setConnectedUserList(userList);
     });
 
     setSocket(socket);
@@ -86,7 +91,7 @@ function App() {
     <div>
       <header id="header_div">
         <div>
-          <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
+          <img src="https://logodix.com/logo/1229689.png" alt="msn butterfly icon" />
           <div>
             {currentView === "global" &&
               <p>Global Chat</p>
@@ -110,7 +115,7 @@ function App() {
         <GlobalChat messageList={publicMessageStack} username={username} />
       }
       {currentView === "users" &&
-        <ConnectedUserList userList={connectedUserList} />
+        <ConnectedUserList usersList={connectedUserList} />
       }
       {currentView === "private" &&
         <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} />
