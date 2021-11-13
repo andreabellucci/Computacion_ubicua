@@ -119,7 +119,12 @@ function App() {
       {(currentView == "global" || currentView == "private") &&
         <footer id="footer_div">
           <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
-          <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
+          {currentView == "global" &&
+            <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
+          }
+          {currentView == "private" &&
+            <input type="submit" onClick={sendPrivateMessage} id="input_submit" value="&#10148;" />
+          }
         </footer>
       }
     </div>
