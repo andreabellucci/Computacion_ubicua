@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Message chat application for SPOC_3" />
+  <link rel="stylesheet" href="./App.css">
+  <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
+  <title>React App</title>
+</head>
+
+<body>
+  <div id="root">
+    <!-- header and logo of the app -->
+    <header id="header_div">
+      <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon">
+      <div>
+        <p>sendertext</p>
+      </div>
+    </header>
+
+    <!-- Append here all messages -->
+    <div id="chat_container">
+
+      <div class="my_text_message">
+        <div class="text_message_header">
+          <p class="text_message_username">
+            KetxoXete-2193
+          </p>
+          <p class="text_messagen_datetime">
+            11/11/2021 19:48:01
+          </p>
+        </div>
+        <div class="text_message_content">
+          <p>Una paja a la crema es una buena paja</p>
+        </div>
+      </div>
+
+      <div class="ur_text_message">
+        <div class="text_message_header">
+          <p class="text_message_username">
+            qkoñote-6969
+          </p>
+          <p class="text_messagen_datetime">
+            11/11/2021 19:48:01
+          </p>
+        </div>
+        <div class="text_message_content">
+          <p>Es una paja muy gustosa y que te saca mucha leche</p>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- message send zone -->
+    <footer id="footer_div">
+      <input type="text" id="input_message" placeholder="message...">
+      <input type="submit" id="input_submit" value="&#10148;">
+    </footer>
+  </div>
+</body>
+
+</html>

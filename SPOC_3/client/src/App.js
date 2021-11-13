@@ -5,16 +5,20 @@ import React from "react";
 
 
 // COMPONENTS
-// import GlobalChat from "./components/ConnectedUserList";
-// import ConnectedUserList from "./components/GlobalChat";
-// import PrivateChat from "./components/PrivateChat";
+import GlobalChat from "./components/ConnectedUserList";
+import ConnectedUserList from "./components/GlobalChat";
+import PrivateChat from "./components/PrivateChat";
 
 const generator = require('project-name-generator');
 
 function App() {
-  const [username, setUsername] = useState("antonio");
-  const [publicMessageStack, setPublicMessageStack] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [username, setUsername] = useState("");
+  const [publicMessageStack, setPublicMessageStack] = useState([]);
+  const [connectedUserList, setconnectedUserList] = useState([]);
+  const [currentView, setCurrentView] = useState("global"); // global, private, users
+  const [newMessage, setNewMessage] = useState("");
+
 
   /* 
   * BLOCK 1
@@ -32,11 +36,7 @@ function App() {
 
     // A new GLOBAL message comes from the server
     socket.on("send_public_message", (message) => {
-      setPublicMessageStack(() => {
-        const newArray = [...publicMessageStack, message];
-        console.log(newArray);
-        return newArray;
-      });
+      setPublicMessageStack((prevMessageStack) => [...prevMessageStack, message]);
     });
 
     setSocket(socket);
@@ -48,42 +48,36 @@ function App() {
   */
   function sendPublicMessage() {
     // Extract the message from the box and clear it
-    let message = document.getElementById("input_message").value;
-    if (message != "") {
-      document.getElementById("input_message").value = "";
-      let newGlobalMessage = { from: username, text: message, datetime: new Date().toLocaleString() };
+    if (newMessage != "") {
+      let newGlobalMessage = { from: username, text: newMessage, datetime: new Date().toLocaleString() };
       socket.emit("broadcast_public_message", newGlobalMessage);
+      setNewMessage("");
     }
+  }
+
+  function handleOnInput(e) {
+    setNewMessage(e.target.value);
   }
 
   // Here we build the entire app
   return (
     <div>
-      <header id="header_div">
-        <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
-        <div>
-          <p>Global Chat</p>
-        </div>
-      </header>
+      {currentView == "global" &&
+        <GlobalChat messageList={publicMessageStack} username={username} />
+      }
+      {currentView == "users" &&
+        <ConnectedUserList userList={connectedUserList} />
+      }
+      {currentView == "private" &&
+        <PrivateChat />
+      }
 
-      <div id="chat_container">
-        {publicMessageStack.map((val, key) => {
-          return (
-            <div key={key} className={username == val.from ? 'my_text_message' : 'ur_text_message'}>
-              <div className="text_message_header">
-                <p className="text_message_username">{val.from}</p>
-                <p className="text_messagen_datetime">{val.datetime}</p>
-              </div>
-              <div className="text_message_content"><p>{val.text}</p></div>
-            </div>
-          );
-        })}
-      </div>
-
-      <footer id="footer_div">
-        <input type="text" id="input_message" placeholder="message..." />
-        <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
-      </footer>
+      {currentView == "global" || currentView == "private" &&
+        <footer id="footer_div">
+          <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
+          <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
+        </footer>
+      }
     </div>
   );
 }
