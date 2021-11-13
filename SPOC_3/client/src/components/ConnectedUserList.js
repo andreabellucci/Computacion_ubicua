@@ -1,17 +1,11 @@
 import React from "react";
 
 function ConnectedUserList(props) {
+
   return (
     <div>
-      <header id="header_div">
-        <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
-        <div>
-          <p>connected users</p>
-        </div>
-      </header>
-
       <div id="connected_users">
-        {props.usersList.map((val, key) => {
+        {props.usersList && props.usersList.map((val, key) => {
           return (
             <div key={key} className="connected_user_container">
               <img

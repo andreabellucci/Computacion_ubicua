@@ -34,7 +34,7 @@ io.on("connection", function (socket) {
   socket.on("broadcast_public_message", function (message) {
     console.log("GLOBAL FROM: [" + message.from + "]");
     console.log(message);
-    io.emit("send_public_message", message);
+    io.emit("deliver_public_message", message);
   });
 
   // Private message sending
@@ -48,7 +48,7 @@ io.on("connection", function (socket) {
 
     if (destinationSocket != null) {
       console.log("SENDING FROM: [" + sourceUser + "] TO [" + destinationUser + "]");
-      io.to(destinationSocket).emit("send_private_message", message);
+      io.to(destinationSocket).emit("deliver_private_message", message);
     } else {
       console.log("CANNOT SEND FROM: [" + sourceUser + "] TO [" + destinationUser + "]");
     }

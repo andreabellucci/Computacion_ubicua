@@ -17,8 +17,8 @@ body {
   background: rgba(72, 217, 243, 0.3)
 }
 
-
 /* GLOBAL CHAT COMPONENT */
+
 header {
   display: flex;
   background: rgb(2, 0, 36);
@@ -26,6 +26,11 @@ header {
   box-shadow: rgba(0, 0, 0, 0.384) 0px 3px 8px;
   height: 7.5vh;
   overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header div {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
@@ -35,14 +40,14 @@ header {
   align-items: center;
 }
 
-header img {
+header div img {
   float: left;
   width: 5vh;
   height: 5vh;
   padding: 3%;
 }
 
-header div p {
+header div div p {
   font-size: 22px;
   font-weight: 520;
   line-height: 26.4px;
@@ -50,6 +55,19 @@ header div p {
   height: 100%;
   color: #eeeeee;
   text-shadow: -1px -1px 1px rgba(255, 255, 255, .1), 2px 2px 2px rgba(0, 0, 0, 0.582);
+  white-space: nowrap;
+}
+
+#header_redirection {
+  display: flex;
+  margin-right: 10%;
+}
+
+#header_redirection img {
+  float: right;
+  width: 4.5vh;
+  height: 4.5vh;
+  margin-right: 1%;
 }
 
 #chat_container {
@@ -124,8 +142,8 @@ footer {
   font-size: 15px;
 }
 
-
 /* CONNECTED USER LIST COMPONENT */
+
 #connected_users {
   background-color: transparent;
   overflow: scroll;
@@ -146,8 +164,9 @@ footer {
   padding: 1%;
   border: 2px solid rgb(133, 140, 248);
   border-radius: 10px;
-  background: rgb(83,83,247);
-background: linear-gradient(324deg, rgba(83,83,247,1) 37%, rgba(88,227,255,1) 100%);}
+  background: rgb(83, 83, 247);
+  background: linear-gradient(324deg, rgba(83, 83, 247, 1) 37%, rgba(88, 227, 255, 1) 100%);
+}
 
 .connected_user_container img {
   width: 13%;

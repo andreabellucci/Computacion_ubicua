@@ -3,13 +3,6 @@ import React from "react";
 function GlobalChat(props) {
   return (
     <div>
-      <header id="header_div">
-        <img src="https://logodix.com/logo/1229689.png" alt="messenger butterfly icon" />
-        <div>
-          <p>Global Chat</p>
-        </div>
-      </header>
-
       <div id="chat_container">
         {props.messageList.map((msg, key) => {
           return (
