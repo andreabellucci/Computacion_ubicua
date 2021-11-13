@@ -77,6 +77,10 @@ function App() {
     setNewMessage(e.target.value);
   }
 
+  function changeAppView(view) {
+    setCurrentView(view);
+  }
+
   // Here we build the entire app
   return (
     <div>
@@ -96,9 +100,9 @@ function App() {
           </div>
         </div>
         <div id="header_redirection">
-          <img src="https://cdn-icons-png.flaticon.com/512/139/139706.png" alt="GlobalChat" />
-          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="UserList" />
-          <img src="https://cdn-icons.flaticon.com/png/512/2593/premium/2593656.png?token=exp=1636808934~hmac=9a263504d8a0fd451a7781f24cdc83d8" alt="PrivateChat" />
+          <img onClick={() => changeAppView("global")} src="https://cdn-icons-png.flaticon.com/512/139/139706.png" alt="GlobalChat" />
+          <img onClick={() => changeAppView("users")} src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="UserList" />
+          <img onClick={() => changeAppView("private")} src="https://cdn-icons.flaticon.com/png/512/2593/premium/2593656.png?token=exp=1636808934~hmac=9a263504d8a0fd451a7781f24cdc83d8" alt="PrivateChat" />
         </div>
       </header>
 
