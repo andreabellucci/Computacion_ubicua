@@ -32,8 +32,11 @@ function App() {
 
     // A new GLOBAL message comes from the server
     socket.on("send_public_message", (message) => {
-      setPublicMessageStack([...publicMessageStack, message]);
-      console.log(publicMessageStack);
+      setPublicMessageStack(() => {
+        const newArray = [...publicMessageStack, message];
+        console.log(newArray);
+        return newArray;
+      });
     });
 
     setSocket(socket);
