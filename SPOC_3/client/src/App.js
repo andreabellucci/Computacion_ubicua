@@ -43,6 +43,8 @@ function App() {
 
     // A new GLOBAL message comes from the server
     socket.on("deliver_private_message", (message) => {
+      console.log("new message!!!!!");
+      console.log(message);
       setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, message]);
     });
 
@@ -73,6 +75,7 @@ function App() {
     if (newMessage !== "") {
       let newPrivateMessage = { from: username, to: currentPrivateChat, text: newMessage, datetime: new Date().toLocaleString() };
       socket.emit("send_private_message", newPrivateMessage);
+      setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, newPrivateMessage]);
       document.getElementById("input_message").value = "";
       setNewMessage("");
     }
@@ -84,6 +87,11 @@ function App() {
 
   function changeAppView(view) {
     setCurrentView(view);
+  }
+
+  function changePrivateChat(user) {
+    setCurrentPrivateChat(user);
+    setCurrentView("private");
   }
 
   // Here we build the entire app
@@ -100,7 +108,7 @@ function App() {
               <p>User List</p>
             }
             {currentView === "private" &&
-              <p>Prv: {currentPrivateChat}</p>
+              <p>{currentPrivateChat}</p>
             }
           </div>
         </div>
@@ -115,13 +123,34 @@ function App() {
         <GlobalChat messageList={publicMessageStack} username={username} />
       }
       {currentView === "users" &&
-        <ConnectedUserList usersList={connectedUserList} />
+        // <ConnectedUserList usersList={connectedUserList} />
+        <div>
+          <div id="connected_users">
+            {connectedUserList.map((val, key) => {
+              if (username != val.username) {
+                return (
+                  <div key={key} className="connected_user_container" onClick={() => changePrivateChat(val.username)}>
+                    <img
+                      src="https://img.utdstc.com/icon/9a8/867/9a8867eb77f8a20e62b5ea69f900de7c650546db544a00ce042d66945fd987bb:200"
+                      alt="messenger butterfly icon" />
+                    <div>
+                      <p>{val.username}</p>
+                    </div>
+                  </div>
+                );
+              } else
+                return;
+            })}
+          </div>
+        </div>
       }
-      {currentView === "private" &&
-        <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} />
+      {
+        currentView === "private" &&
+        <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} username={username} />
       }
 
-      {(currentView === "global" || currentView === "private") &&
+      {
+        (currentView === "global" || currentView === "private") &&
         <footer id="footer_div">
           <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
           {currentView === "global" &&
@@ -132,7 +161,7 @@ function App() {
           }
         </footer>
       }
-    </div>
+    </div >
   );
 }
 
