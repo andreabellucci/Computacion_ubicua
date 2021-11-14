@@ -50,9 +50,10 @@ io.on("connection", function (socket) {
     let sourceUser = message.from;
     let destinationUser = message.to;
 
-    let destinationSocket = user_list.find(usr => {
-      return usr.username == sourceUser;
-    });
+    const isUser = (user) => user.username == destinationUser;
+    let destinationUserIndex = user_list.findIndex(isUser);
+
+    let destinationSocket = user_list[destinationUserIndex].id;
 
     if (destinationSocket != null) {
       console.log("SENDING FROM: [" + sourceUser + "] TO [" + destinationUser + "]");
