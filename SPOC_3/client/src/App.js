@@ -5,6 +5,8 @@ import React from "react";
 
 
 // COMPONENTS
+import { Context } from "./components/Context";
+import Header from "./components/Header";
 import ConnectedUserList from "./components/ConnectedUserList";
 import GlobalChat from "./components/GlobalChat";
 import PrivateChat from "./components/PrivateChat";
@@ -92,17 +94,8 @@ function App() {
     }
   }
 
-  function changePrivateChat(user) {
-    setCurrentPrivateChat(user);
-    setCurrentView("private");
-  }
-
   function handleOnInput(e) {
     setNewMessage(e.target.value);
-  }
-
-  function changeAppView(view) {
-    setCurrentView(view);
   }
 
   function sendChallengeAnswer(answer) {
@@ -125,58 +118,23 @@ function App() {
           </div>
         </div>
       }
+      <Context.Provider value={{
+        value1: [socket, setSocket],
+        value2: [username, setUsername],
+        value3: [publicMessageStack, setPublicMessageStack],
+        value4: [privateMessageStack, setPrivateMessageStack],
+        value5: [connectedUserList, setConnectedUserList],
+        value6: [currentView, setCurrentView],
+        value7: [currentPrivateChat, setCurrentPrivateChat],
+        value8: [newMessage, setNewMessage],
+        value9: [challenge, setChallenge]
+      }}>
+        <Header currentPrivateChat={currentPrivateChat} />
+        <GlobalChat messageList={publicMessageStack} username={username} currentView={currentView} />
+        <ConnectedUserList username={username} connectedUserList={connectedUserList} />
+        <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} username={username} currentView={currentView} />
+      </Context.Provider>
 
-      <header id="header_div">
-        <div>
-          <img src="https://logodix.com/logo/1229689.png" alt="msn butterfly icon" />
-          <div>
-            {currentView === "global" &&
-              <p>Global Chat</p>
-            }
-            {currentView === "users" &&
-              <p>User List</p>
-            }
-            {currentView === "private" &&
-              <p>{currentPrivateChat}</p>
-            }
-          </div>
-        </div>
-        <div id="header_redirection">
-          <img onClick={() => changeAppView("global")} src="https://cdn-icons-png.flaticon.com/512/139/139706.png" alt="GlobalChat" />
-          <img onClick={() => changeAppView("users")} src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="UserList" />
-          <img onClick={() => changeAppView("private")} src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" alt="PrivateChat" />
-        </div>
-      </header>
-
-      {currentView === "global" &&
-        <GlobalChat messageList={publicMessageStack} username={username} />
-      }
-      {currentView === "users" &&
-        // <ConnectedUserList usersList={connectedUserList} />
-        <div>
-          <div id="connected_users">
-            {connectedUserList.map((val, key) => {
-              if (username !== val.username) {
-                return (
-                  <div key={key} className="connected_user_container" onClick={() => changePrivateChat(val.username)}>
-                    <img
-                      src="https://img.utdstc.com/icon/9a8/867/9a8867eb77f8a20e62b5ea69f900de7c650546db544a00ce042d66945fd987bb:200"
-                      alt="messenger butterfly icon" />
-                    <div>
-                      <p>{val.username}</p>
-                    </div>
-                  </div>
-                );
-              } else
-                return <div key={key}></div>;
-            })}
-          </div>
-        </div>
-      }
-      {
-        currentView === "private" &&
-        <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} username={username} />
-      }
 
       {
         (currentView === "global" || currentView === "private") &&

@@ -1,23 +1,24 @@
 import React from "react";
 
-function GlobalChat(props) {
+export default function GlobalChat(props) {
+
   return (
     <div>
-      <div id="chat_container">
-        {props.messageList.map((msg, key) => {
-          return (
-            <div key={key} className={props.username === msg.from ? 'my_text_message' : 'ur_text_message'}>
-              <div className="text_message_header">
-                <p className="text_message_username">{msg.from}</p>
-                <p className="text_messagen_datetime">{msg.datetime}</p>
+      {props.currentView === "global" &&
+        <div id="chat_container">
+          {props.messageList.map((msg, key) => {
+            return (
+              <div key={key} className={props.username === msg.from ? 'my_text_message' : 'ur_text_message'}>
+                <div className="text_message_header">
+                  <p className="text_message_username">{msg.from}</p>
+                  <p className="text_messagen_datetime">{msg.datetime}</p>
+                </div>
+                <div className="text_message_content"><p>{msg.text}</p></div>
               </div>
-              <div className="text_message_content"><p>{msg.text}</p></div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      }
     </div>
   );
 }
-
-export default GlobalChat;

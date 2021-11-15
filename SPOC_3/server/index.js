@@ -117,7 +117,7 @@ async function challengeRandomUser() {
     userResponseTimer = setTimeout(disconnectUser, secondsToAnswer * 1000);
   }
 
-  // when this challenge has finished, challenge another user in one minute
+  // Challenge another user in one minute
   setTimeout(challengeRandomUser, 60000);
 }
 
@@ -159,6 +159,6 @@ function shuffleQuestions(array) {
 }
 
 // A user is challenged every minute
-setTimeout(challengeRandomUser, 10000);
+setTimeout(challengeRandomUser, 60000);
 
 server.listen(3001, () => console.log('server started'));
