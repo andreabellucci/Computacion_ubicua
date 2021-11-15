@@ -71,6 +71,8 @@ export default function App() {
 
     // The server force-disconnect us
     socket.on("disconnect_user", () => {
+      setChallenge(null);
+      alert("Prueba no superada, desconexión del servidor...");
       socket.disconnect();
     });
 
