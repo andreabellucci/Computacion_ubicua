@@ -6,14 +6,22 @@ import React from "react";
 
 // COMPONENTS
 import { Context } from "./components/Context";
+import Challenge from "./components/Challenge";
 import Header from "./components/Header";
 import ConnectedUserList from "./components/ConnectedUserList";
 import GlobalChat from "./components/GlobalChat";
 import PrivateChat from "./components/PrivateChat";
+import Input from "./components/Input";
+
 
 const generator = require('project-name-generator');
 
-function App() {
+export default function App() {
+
+  /* 
+  * BLOCK 1
+  * Constants
+  */
   const [socket, setSocket] = useState(null);
   const [username, setUsername] = useState("");
   const [publicMessageStack, setPublicMessageStack] = useState([]);
@@ -26,7 +34,7 @@ function App() {
 
 
   /* 
-  * BLOCK 1
+  * BLOCK 2
   * Socket EVENT declaration
   */
   useEffect(() => {
@@ -69,55 +77,13 @@ function App() {
     setSocket(socket);
   }, []);
 
+
   /* 
-   * BLOCK 2
-   * Application FUNCTIONS
+  * BLOCK 3
+  * App build
   */
-  function sendPublicMessage() {
-    // Extract the message from the box and clear it
-    if (newMessage !== "") {
-      let newGlobalMessage = { from: username, text: newMessage, datetime: new Date().toLocaleString() };
-      socket.emit("broadcast_public_message", newGlobalMessage);
-      document.getElementById("input_message").value = "";
-      setNewMessage("");
-    }
-  }
-
-  function sendPrivateMessage() {
-    // Extract the message from the box and clear it
-    if (newMessage !== "") {
-      let newPrivateMessage = { from: username, to: currentPrivateChat, text: newMessage, datetime: new Date().toLocaleString() };
-      socket.emit("send_private_message", newPrivateMessage);
-      setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, newPrivateMessage]);
-      document.getElementById("input_message").value = "";
-      setNewMessage("");
-    }
-  }
-
-  function handleOnInput(e) {
-    setNewMessage(e.target.value);
-  }
-
-  function sendChallengeAnswer(answer) {
-    socket.emit("user_send_response", answer);
-    setChallenge(null);
-  }
-
-
-  // Here we build the entire app
   return (
     <div>
-
-      {challenge &&
-        <div id="challenge">
-          <h2>{challenge.question}</h2>
-          <div id="challenge_answers">
-            {challenge.answers.map((val, key) => {
-              return <p onClick={() => sendChallengeAnswer(val)} key={key}>{val}</p>;
-            })}
-          </div>
-        </div>
-      }
       <Context.Provider value={{
         value1: [socket, setSocket],
         value2: [username, setUsername],
@@ -129,27 +95,13 @@ function App() {
         value8: [newMessage, setNewMessage],
         value9: [challenge, setChallenge]
       }}>
+        <Challenge></Challenge>
         <Header currentPrivateChat={currentPrivateChat} />
         <GlobalChat messageList={publicMessageStack} username={username} currentView={currentView} />
         <ConnectedUserList username={username} connectedUserList={connectedUserList} />
         <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} username={username} currentView={currentView} />
+        <Input></Input>
       </Context.Provider>
-
-
-      {
-        (currentView === "global" || currentView === "private") &&
-        <footer id="footer_div">
-          <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
-          {currentView === "global" &&
-            <input type="submit" onClick={sendPublicMessage} id="input_submit" value="&#10148;" />
-          }
-          {currentView === "private" &&
-            <input type="submit" onClick={sendPrivateMessage} id="input_submit" value="&#10148;" />
-          }
-        </footer>
-      }
     </div >
   );
 }
-
-export default App;
