@@ -54,8 +54,6 @@ export default function App() {
 
     // A new PRIVATE message comes from the server
     socket.on("deliver_private_message", (message) => {
-      console.log("new message!!!!!");
-      console.log(message);
       setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, message]);
     });
 
@@ -72,8 +70,8 @@ export default function App() {
     // The server force-disconnect us
     socket.on("disconnect_user", () => {
       setChallenge(null);
-      alert("Prueba no superada, desconexión del servidor...");
       socket.disconnect();
+      alert("Prueba no superada, desconexión del servidor...");
     });
 
     setSocket(socket);

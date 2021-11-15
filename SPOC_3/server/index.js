@@ -126,7 +126,7 @@ async function challengeRandomUser() {
 
 function disconnectUser() {
   io.to(currentChallengedUser.id).emit("disconnect_user");
-  console.log("DISCONNECTING USER: [" + currentChallengedUser + "]");
+  console.log("DISCONNECTING USER: [" + currentChallengedUser.username + "]");
 }
 
 // If the answer is right, let the user go
