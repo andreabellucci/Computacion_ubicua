@@ -105,9 +105,12 @@ async function challengeRandomUser() {
     console.log("NEW CHALLENGED USER: [" + currentChallengedUser.username + "]");
     console.log(question);
 
+    let answersArray = question.incorrect_answers;
+    answersArray.push(question.correct_answer);
+
     let challenge = {
       question: question.question,
-      answers: shuffleQuestions([question.correct_answer, question.incorrect_answers])
+      answers: shuffleQuestions(answersArray)
     };
 
     // Send the user the challenge

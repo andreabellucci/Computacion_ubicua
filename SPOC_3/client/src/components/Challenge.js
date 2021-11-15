@@ -17,11 +17,9 @@ export default function Challenge() {
       {challenge &&
         <div id="challenge">
           <h2>{challenge.question}</h2>
-          <div id="challenge_answers">
-            {challenge.answers.map((val, key) => {
-              return <p onClick={() => sendChallengeAnswer(val)} key={key}>{val}</p>;
-            })}
-          </div>
+          {challenge.answers.map((val, key) => {
+            return <p onClick={() => sendChallengeAnswer(val)} key={key}>{val}</p>;
+          })}
         </div>
       }
     </div>
