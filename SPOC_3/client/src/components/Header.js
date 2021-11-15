@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <header id="header_div">
-      <div>
+      <div id="header_div_title">
         <img src="https://logodix.com/logo/1229689.png" alt="msn butterfly icon" />
         <div>
           {currentView === "global" &&

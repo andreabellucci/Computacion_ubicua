@@ -12,8 +12,11 @@ body {
 }
 
 #root {
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
   background: rgba(72, 217, 243, 0.3)
 }
 
@@ -22,10 +25,12 @@ header {
   background: rgb(2, 0, 36);
   background: linear-gradient(241deg, rgba(2, 0, 36, 1) 0%, rgba(164, 164, 247, 1) 0%, rgba(11, 186, 221, 1) 100%);
   box-shadow: rgba(0, 0, 0, 0.384) 0px 3px 8px;
-  height: 7.5vh;
+  top: 0%;
+  bottom: 92.5%;
   overflow: hidden;
   align-items: center;
   justify-content: space-between;
+  position: fixed;
 }
 
 header div {
@@ -38,14 +43,15 @@ header div {
   align-items: center;
 }
 
-header div img {
+#header_div_title img {
   float: left;
-  width: 5vh;
-  height: 5vh;
-  padding: 3%;
+  width: 30%;
+  height: 30%;
+  padding: 1%;
+  margin: 4%;
 }
 
-header div div p {
+#header_div_title p {
   font-size: 22px;
   font-weight: 520;
   line-height: 26.4px;
@@ -57,28 +63,35 @@ header div div p {
 }
 
 #header_redirection {
+  justify-content: right;
   display: flex;
-  margin-right: 10%;
+  padding-right: 4%;
 }
 
 #header_redirection img {
   float: right;
-  width: 4.5vh;
-  height: 4.5vh;
-  margin-right: 1%;
+  width: 11%;
+  height: 11%;
+  margin: 1%;
 }
 
 #chat_container {
   background-color: transparent;
   overflow: scroll;
-  height: 84.5vh;
+  position: fixed;
+  top: 7.5%;
+  bottom: 8%;
+  left: 0%;
+  right: 0%;
 }
 
 footer {
   display: flex;
   width: 100%;
   background-color: transparent;
-  height: 8vh;
+  top: 92%;
+  bottom: 0%;
+  position: fixed;
 }
 
 #input_submit {
@@ -143,7 +156,11 @@ footer {
 #connected_users {
   background-color: transparent;
   overflow: scroll;
-  height: 92.5vh;
+  position: fixed;
+  top: 7.5%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
 }
 
 .connected_user_container {
@@ -175,6 +192,7 @@ footer {
 }
 
 #challenge {
+  z-index: 99;
   display: inline-block;
   padding: 4%;
   position: fixed;
