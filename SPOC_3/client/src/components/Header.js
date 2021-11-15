@@ -3,9 +3,10 @@ import React, { useContext } from "react";
 import { Context } from "./Context";
 
 
-export default function Header(props) {
+export default function Header() {
 
-  const { value6 } = useContext(Context);
+  const { value6, value7 } = useContext(Context);
+  const [currentPrivateChat, setCurrentPrivateChat] = value7;
   const [currentView, setCurrentView] = value6;
 
   return (
@@ -20,7 +21,7 @@ export default function Header(props) {
             <p>User List</p>
           }
           {currentView === "private" &&
-            <p>{props.currentPrivateChat}</p>
+            <p>{currentPrivateChat}</p>
           }
         </div>
       </div>

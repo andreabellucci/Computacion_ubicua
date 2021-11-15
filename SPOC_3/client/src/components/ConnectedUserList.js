@@ -2,9 +2,11 @@ import React, { useContext } from "react";
 
 import { Context } from "./Context";
 
-export default function ConnectedUserList(props) {
+export default function ConnectedUserList() {
 
-  const { value6, value7 } = useContext(Context);
+  const { value2, value5, value6, value7 } = useContext(Context);
+  const [username, setUsername] = value2;
+  const [connectedUserList, setConnectedUserList] = value5;
   const [currentPrivateChat, setCurrentPrivateChat] = value7;
   const [currentView, setCurrentView] = value6;
 
@@ -18,8 +20,8 @@ export default function ConnectedUserList(props) {
       {currentView === "users" &&
         <div>
           <div id="connected_users">
-            {props.connectedUserList.map((val, key) => {
-              if (props.username !== val.username) {
+            {connectedUserList.map((val, key) => {
+              if (username !== val.username) {
                 return (
                   <div key={key} className="connected_user_container" onClick={() => changePrivateChat(val.username)}>
                     <img

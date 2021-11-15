@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 
-export default function PrivateChat(props) {
+import { Context } from "./Context";
+
+export default function PrivateChat() {
+
+  const { value2, value4, value6, value7 } = useContext(Context);
+  const [username, setUsername] = value2;
+  const [privateMessageStack, setPrivateMessageStack] = value4;
+  const [currentView, setCurrentView] = value6;
+  const [currentPrivateChat, setCurrentPrivateChat] = value7;
+
   return (
     <div>
-      {props.currentView === "private" &&
+      {currentView === "private" &&
         <div id="chat_container">
-          {props.messageList.map((msg, key) => {
-            if (msg.from === props.currentChat && msg.to === props.username) {
+          {privateMessageStack.map((msg, key) => {
+            if (msg.from === currentPrivateChat && msg.to === username) {
               return (
                 <div key={key} className='ur_text_message'>
                   <div className="text_message_header">
@@ -16,7 +25,7 @@ export default function PrivateChat(props) {
                   <div className="text_message_content"><p>{msg.text}</p></div>
                 </div>
               );
-            } else if (msg.from === props.username && msg.to === props.currentChat) {
+            } else if (msg.from === username && msg.to === currentPrivateChat) {
               return (
                 <div key={key} className='my_text_message'>
                   <div className="text_message_header">

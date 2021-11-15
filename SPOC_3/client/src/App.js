@@ -95,12 +95,12 @@ export default function App() {
         value8: [newMessage, setNewMessage],
         value9: [challenge, setChallenge]
       }}>
-        <Challenge></Challenge>
-        <Header currentPrivateChat={currentPrivateChat} />
-        <GlobalChat messageList={publicMessageStack} username={username} currentView={currentView} />
-        <ConnectedUserList username={username} connectedUserList={connectedUserList} />
-        <PrivateChat messageList={privateMessageStack} currentChat={currentPrivateChat} username={username} currentView={currentView} />
-        <Input></Input>
+        <Challenge />
+        <Header />
+        <GlobalChat />
+        <ConnectedUserList />
+        <PrivateChat />
+        <Input />
       </Context.Provider>
     </div >
   );
