@@ -20,6 +20,7 @@ function App() {
   const [currentView, setCurrentView] = useState("global"); // global, private, users
   const [currentPrivateChat, setCurrentPrivateChat] = useState(""); // Who you're talking in private at the moment
   const [newMessage, setNewMessage] = useState("");
+  const [challenge, setChallenge] = useState(null);
 
 
   /* 
@@ -41,16 +42,26 @@ function App() {
       setPublicMessageStack((prevMessageStack) => [...prevMessageStack, message]);
     });
 
-    // A new GLOBAL message comes from the server
+    // A new PRIVATE message comes from the server
     socket.on("deliver_private_message", (message) => {
       console.log("new message!!!!!");
       console.log(message);
       setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, message]);
     });
 
-    // A new GLOBAL message comes from the server
+    // The updated user connected list arrives
     socket.on("update_connected_users_list", (userList) => {
       setConnectedUserList(userList);
+    });
+
+    // The server challenge us
+    socket.on("server_challenge", (challenge) => {
+      setChallenge(challenge);
+    });
+
+    // The server force-disconnect us
+    socket.on("disconnect_user", () => {
+      socket.disconnect();
     });
 
     setSocket(socket);
@@ -81,6 +92,11 @@ function App() {
     }
   }
 
+  function changePrivateChat(user) {
+    setCurrentPrivateChat(user);
+    setCurrentView("private");
+  }
+
   function handleOnInput(e) {
     setNewMessage(e.target.value);
   }
@@ -89,14 +105,27 @@ function App() {
     setCurrentView(view);
   }
 
-  function changePrivateChat(user) {
-    setCurrentPrivateChat(user);
-    setCurrentView("private");
+  function sendChallengeAnswer(answer) {
+    socket.emit("user_send_response", answer);
+    setChallenge(null);
   }
+
 
   // Here we build the entire app
   return (
     <div>
+
+      {challenge &&
+        <div id="challenge">
+          <h2>{challenge.question}</h2>
+          <div id="challenge_answers">
+            {challenge.answers.map((val, key) => {
+              return <p onClick={() => sendChallengeAnswer(val)} key={key}>{val}</p>;
+            })}
+          </div>
+        </div>
+      }
+
       <header id="header_div">
         <div>
           <img src="https://logodix.com/logo/1229689.png" alt="msn butterfly icon" />
@@ -127,7 +156,7 @@ function App() {
         <div>
           <div id="connected_users">
             {connectedUserList.map((val, key) => {
-              if (username != val.username) {
+              if (username !== val.username) {
                 return (
                   <div key={key} className="connected_user_container" onClick={() => changePrivateChat(val.username)}>
                     <img
@@ -139,7 +168,7 @@ function App() {
                   </div>
                 );
               } else
-                return;
+                return <div key={key}></div>;
             })}
           </div>
         </div>

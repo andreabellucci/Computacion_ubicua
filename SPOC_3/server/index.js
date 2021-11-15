@@ -102,11 +102,16 @@ async function challengeRandomUser() {
     const question = await getTriviaQuestion();
     correctAnswer = question.correct_answer;
 
-    console.log("NEW CHALLENGED USER: [" + currentChallengedUser + "]");
+    console.log("NEW CHALLENGED USER: [" + currentChallengedUser.username + "]");
     console.log(question);
 
+    let challenge = {
+      question: question.question,
+      answers: shuffleQuestions([question.correct_answer, question.incorrect_answers])
+    };
+
     // Send the user the challenge
-    io.to(currentChallengedUser.id).emit("server_challenge", question);
+    io.to(currentChallengedUser.id).emit("server_challenge", challenge);
 
     // If the user doesn't answer in the specified time, disconnect him
     userResponseTimer = setTimeout(disconnectUser, secondsToAnswer * 1000);
@@ -118,18 +123,20 @@ async function challengeRandomUser() {
 
 function disconnectUser() {
   io.to(currentChallengedUser.id).emit("disconnect_user");
-
-  const isUser = (user) => user.id == currentChallengedUser.id;
-  let rmUsrIndex = user_list.findIndex(isUser);
-  user_list.splice(rmUsrIndex, 1);
+  console.log("DISCONNECTING USER: [" + currentChallengedUser + "]");
 }
 
 // If the answer is right, let the user go
 function answerCurrentChallenge(response) {
-  if (response == correctAnswer)
+  if (response == correctAnswer) {
+    console.log("THE ANSWER IS CORRECT!");
     clearTimeout(userResponseTimer);
-  else
+  }
+  else {
+    console.log("THE ANSWER IS INCORRECT...");
     disconnectUser();
+  }
+
 }
 
 // Makes a petition to the API and brings a random question
@@ -140,6 +147,15 @@ const getTriviaQuestion = async () => {
   } catch (err) {
     console.log(err);
   }
+}
+
+function shuffleQuestions(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
 }
 
 // A user is challenged every minute
