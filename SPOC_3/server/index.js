@@ -2,7 +2,9 @@ const express = require('express');
 const { SocketAddress } = require('net');
 const app = express();
 const server = require("http").Server(app);
+const axios = require('axios');
 
+// Connected user data
 let user_list = [];
 
 const io = require("socket.io")(server, {
@@ -68,6 +70,62 @@ io.on("connection", function (socket) {
     console.log("REQUESTING USER LIST TO: [" + socket.id + "]");
     io.to(socket.id).emit("get_connected_list", user_list);
   });
+
+  // User's response to the challenge
+  socket.on("user_send_response", function (response) {
+    console.log("USER ANSWER RECEIVED: [" + socket.id + "]");
+    answerCurrentChallenge(response);
+  });
+
 });
+
+
+// Time left for the user to answer the question
+let userResponseTimer = setTimeout();
+
+// Stores the correct answer to the current challenge
+let correctAnswer;
+let currentChallengedUser;
+
+// Challenges a random user on a certain period of time
+async function challengeRandomUser() {
+  // If there is any available user...
+  if (user_list.length > 0) {
+
+    // Pick a random user
+    let randomIndex = Math.floor(Math.random() * user_list.length);
+    currentChallengedUser = user_list[randomIndex];
+
+    // Get the random question
+    const question = await getTriviaQuestion();
+    correctAnswer = question.correct_answer;
+
+    console.log("NEW CHALLENGED USER: [" + currentChallengedUser + "]");
+    console.log(question);
+  }
+
+  // when this challenge has finished, challenge another user
+  setTimeout(challengeRandomUser, 60000);
+}
+
+// If the answer is right, let the user go
+function answerCurrentChallenge(response) {
+  if (response == correctAnswer) {
+    clearTimeout(userResponseTimer);
+  }
+}
+
+// Makes a petition to the API and brings a random question
+const getTriviaQuestion = async () => {
+  try {
+    const response = await axios.get('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple');
+    return response.data.results[0];
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// A user is challenged every minute
+setTimeout(challengeRandomUser, 10000);
 
 server.listen(3001, () => console.log('server started'));
