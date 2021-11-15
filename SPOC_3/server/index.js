@@ -3,6 +3,7 @@ const { SocketAddress } = require('net');
 const app = express();
 const server = require("http").Server(app);
 const axios = require('axios');
+const { getEventListeners } = require('events');
 
 // Connected user data
 let user_list = [];
@@ -81,7 +82,8 @@ io.on("connection", function (socket) {
 
 
 // Time left for the user to answer the question
-let userResponseTimer = setTimeout();
+let userResponseTimer;
+let secondsToAnswer = 30;
 
 // Stores the correct answer to the current challenge
 let correctAnswer;
@@ -102,17 +104,32 @@ async function challengeRandomUser() {
 
     console.log("NEW CHALLENGED USER: [" + currentChallengedUser + "]");
     console.log(question);
+
+    // Send the user the challenge
+    io.to(currentChallengedUser.id).emit("server_challenge", question);
+
+    // If the user doesn't answer in the specified time, disconnect him
+    userResponseTimer = setTimeout(disconnectUser, secondsToAnswer * 1000);
   }
 
-  // when this challenge has finished, challenge another user
+  // when this challenge has finished, challenge another user in one minute
   setTimeout(challengeRandomUser, 60000);
+}
+
+function disconnectUser() {
+  io.to(currentChallengedUser.id).emit("disconnect_user");
+
+  const isUser = (user) => user.id == currentChallengedUser.id;
+  let rmUsrIndex = user_list.findIndex(isUser);
+  user_list.splice(rmUsrIndex, 1);
 }
 
 // If the answer is right, let the user go
 function answerCurrentChallenge(response) {
-  if (response == correctAnswer) {
+  if (response == correctAnswer)
     clearTimeout(userResponseTimer);
-  }
+  else
+    disconnectUser();
 }
 
 // Makes a petition to the API and brings a random question
