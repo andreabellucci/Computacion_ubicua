@@ -94,15 +94,14 @@ footer {
   position: fixed;
 }
 
-#input_submit {
+.input_submit {
   float: right;
   padding-left: 1%;
   padding-right: 1%;
-  margin-left: 1%;
   white-space: nowrap;
   width: 12%;
   border-radius: 7px;
-  margin: 1% 2% 2% 1%;
+  margin: 1% 1% 2% 0%;
   border: 2px solid rgba(0, 0, 0, 0.568);
 }
 
