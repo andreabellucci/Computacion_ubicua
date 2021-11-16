@@ -11,6 +11,7 @@ import Header from "./components/Header";
 import ConnectedUserList from "./components/ConnectedUserList";
 import GlobalChat from "./components/GlobalChat";
 import PrivateChat from "./components/PrivateChat";
+import PendingMessage from "./components/PendingMessage";
 import Input from "./components/Input";
 
 
@@ -31,6 +32,7 @@ export default function App() {
   const [currentPrivateChat, setCurrentPrivateChat] = useState(""); // Who you're talking in private at the moment
   const [newMessage, setNewMessage] = useState("");
   const [challenge, setChallenge] = useState(null);
+  const [pendingSendingMessage, setPendingSendingMessage] = useState(null);
 
 
   /* 
@@ -93,13 +95,15 @@ export default function App() {
         value6: [currentView, setCurrentView],
         value7: [currentPrivateChat, setCurrentPrivateChat],
         value8: [newMessage, setNewMessage],
-        value9: [challenge, setChallenge]
+        value9: [challenge, setChallenge],
+        value10: [pendingSendingMessage, setPendingSendingMessage]
       }}>
         <Challenge />
         <Header />
         <GlobalChat />
         <ConnectedUserList />
         <PrivateChat />
+        <PendingMessage />
         <Input />
       </Context.Provider>
     </div >

@@ -3,7 +3,7 @@ import { Context } from "./Context";
 
 export default function Input() {
 
-  const { value1, value2, value4, value6, value7, value8 } = useContext(Context);
+  const { value1, value2, value4, value6, value7, value8, value10 } = useContext(Context);
   const [socket, setSocket] = value1;
   const [username, setUsername] = value2;
   const [privateMessageStack, setPrivateMessageStack] = value4;
@@ -11,7 +11,8 @@ export default function Input() {
   const [currentPrivateChat, setCurrentPrivateChat] = value7;
   const [newMessage, setNewMessage] = value8;
   const [timerMessage, setTimerMessage] = useState(null);
-  const [pendingTimerMessage, setPendingTimerMessage] = useState(null);
+  const [pendingSendingMessage, setPendingSendingMessage] = value10;
+
 
   function sendPublicMessage(mode) {
     // Extract the message from the box and clear it
@@ -19,11 +20,12 @@ export default function Input() {
       let newGlobalMessage = { from: username, text: newMessage, datetime: new Date().toLocaleString() };
       document.getElementById("input_message").value = "";
       setNewMessage("");
-      setPendingTimerMessage(newGlobalMessage);
 
       if (mode === "normal") {
         socket.emit("broadcast_public_message", newGlobalMessage);
       } else if (mode === "timer") {
+
+        setPendingSendingMessage(newGlobalMessage);
 
         // Send the message in the next 5 seconds...
         setTimerMessage(setTimeout(() => {
@@ -40,11 +42,12 @@ export default function Input() {
       let newPrivateMessage = { from: username, to: currentPrivateChat, text: newMessage, datetime: new Date().toLocaleString() };
       document.getElementById("input_message").value = "";
       setNewMessage("");
-      setPendingTimerMessage(newPrivateMessage);
 
       if (mode === "normal") {
         socket.emit("send_private_message", newPrivateMessage);
       } else if (mode === "timer") {
+
+        setPendingSendingMessage(newPrivateMessage);
 
         // Send the message in the next 5 seconds...
         setTimerMessage(setTimeout(() => {
