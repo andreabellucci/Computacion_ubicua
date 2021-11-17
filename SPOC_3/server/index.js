@@ -162,6 +162,6 @@ function shuffleQuestions(array) {
 }
 
 // A user is challenged every minute
-setTimeout(challengeRandomUser, 60000);
+// setTimeout(challengeRandomUser, 60000);
 
 server.listen(3001, () => console.log('server started'));

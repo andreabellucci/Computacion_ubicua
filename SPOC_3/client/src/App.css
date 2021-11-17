@@ -91,6 +91,7 @@ footer {
   background-color: transparent;
   top: 92%;
   bottom: 0%;
+  left: 0%;
   position: fixed;
 }
 
@@ -121,6 +122,7 @@ footer {
   border: 2px solid rgba(0, 0, 0, 0.568);
   background: rgb(2, 0, 36);
   background: linear-gradient(215deg, rgba(2, 0, 36, 1) 0%, rgba(214, 255, 200, 1) 0%, rgba(138, 236, 255, 1) 100%);
+  word-wrap: break-word
 }
 
 .ur_text_message {
@@ -131,6 +133,7 @@ footer {
   border: 2px solid rgba(0, 0, 0, 0.568);
   background: rgb(2, 0, 36);
   background: linear-gradient(129deg, rgba(2, 0, 36, 1) 0%, rgba(255, 251, 186, 1) 0%, rgba(255, 194, 53, 1) 100%);
+  word-wrap: break-word
 }
 
 .text_message_header {
@@ -223,4 +226,26 @@ footer {
   background: linear-gradient(227deg, rgba(2, 0, 36, 1) 0%, rgba(120, 0, 255, 1) 0%, rgba(53, 248, 255, 1) 100%);
   border: 2px solid rgba(0, 0, 0, 0.568);
   border-radius: 10px;
+}
+
+#text_message_pending {
+  position: fixed;
+  bottom: 9%;
+  left: 2%;
+  right: 1%;
+  z-index: 98;
+  padding: 1%;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+  border-radius: 7px;
+  background-color: tomato;
+  word-wrap: break-word;
+}
+
+#text_message_header_pending {
+  display: flex;
+  justify-content: space-between;
+}
+
+#text_message_username_pending {
+  font-weight: bold;
 }

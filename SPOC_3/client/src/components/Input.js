@@ -31,6 +31,7 @@ export default function Input() {
         setTimerMessage(setTimeout(() => {
           socket.emit("broadcast_public_message", newGlobalMessage);
           setTimerMessage(null);
+          setPendingSendingMessage(null);
         }, 5000));
       }
     }
@@ -54,6 +55,7 @@ export default function Input() {
           socket.emit("send_private_message", newPrivateMessage);
           setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, newPrivateMessage]);
           setTimerMessage(null);
+          setPendingSendingMessage(null);
         }, 5000));
       }
     }
@@ -62,6 +64,7 @@ export default function Input() {
   function cancelMessage() {
     clearTimeout(timerMessage);
     setTimerMessage(null);
+    setPendingSendingMessage(null);
   }
 
   function handleOnInput(e) {
