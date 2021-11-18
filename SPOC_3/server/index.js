@@ -146,6 +146,7 @@ function answerCurrentChallenge(response) {
 const getTriviaQuestion = async () => {
   try {
     const response = await axios.get('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple');
+    // const response = await fetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple');
     return response.data.results[0];
   } catch (err) {
     console.log(err);
@@ -162,6 +163,6 @@ function shuffleQuestions(array) {
 }
 
 // A user is challenged every minute
-// setTimeout(challengeRandomUser, 60000);
+setTimeout(challengeRandomUser, 1000);
 
 server.listen(3001, () => console.log('server started'));

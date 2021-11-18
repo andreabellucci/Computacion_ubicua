@@ -44,7 +44,7 @@ export default function App() {
 
     // When the socket connects to the server
     socket.on("connect", () => {
-      const newUserName = generator({ words: 2, number: false }).dashed;
+      const newUserName = generator({ words: 1, number: true }).dashed;
       setUsername(newUserName);
       socket.emit("register_user", newUserName);
     });
