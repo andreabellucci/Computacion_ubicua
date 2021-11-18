@@ -71,6 +71,59 @@ export default function Input() {
     setNewMessage(e.target.value);
   }
 
+  function configureAccelerometer() {
+
+    let lastX = 0;
+    let lastY = 0;
+    let lastZ = 0;
+
+    let shaking = false;
+
+    const options = {
+      threshold: 15
+    };
+
+
+    if ('Accelerometer' in window) {
+      try {
+        const acc = new window.Accelerometer({ frequency: 60 });
+        /*acc.addEventListener("reading", function(){
+     
+        })*/
+        acc.onreading = () => {
+          const deltaX = Math.abs(lastX - acc.x);
+          const deltaY = Math.abs(lastY - acc.y);
+          const deltaZ = Math.abs(lastZ - acc.z);
+
+          if (((deltaX > options.threshold) && (deltaY > options.threshold)) ||
+            ((deltaX > options.threshold) && (deltaZ > options.threshold)) ||
+            ((deltaY > options.threshold) && (deltaZ > options.threshold))
+          ) {
+            if (!shaking) {
+              cancelMessage();
+              shaking = true;
+            }
+          } else {
+            if (shaking) {
+              shaking = false;
+            }
+          }
+
+          lastX = acc.x;
+          lastY = acc.y;
+          lastZ = acc.z;
+
+        }
+
+        acc.start();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  configureAccelerometer();
+
   return (
     <div>
       {(currentView === "global" || currentView === "private") &&

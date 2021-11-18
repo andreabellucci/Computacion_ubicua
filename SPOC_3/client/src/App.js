@@ -73,6 +73,7 @@ export default function App() {
         .then(response => response.json())
         .then(data => {
           setChallenge(data.results[0]);
+          console.log(data.results[0].correct_answer);
 
           let array = data.results[0].incorrect_answers;
           array.push(data.results[0].correct_answer);
