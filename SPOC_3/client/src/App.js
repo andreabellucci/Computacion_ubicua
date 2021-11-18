@@ -106,8 +106,6 @@ export default function App() {
       [array[i], array[j]] = [array[j], array[i]];
     }
 
-    console.log(array);
-
     return array;
   }
 

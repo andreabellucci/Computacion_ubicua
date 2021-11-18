@@ -77,7 +77,7 @@ export default function Input() {
     let lastY = 0;
     let lastZ = 0;
 
-    let shaking = false;
+    let moving = false;
 
     const options = {
       threshold: 15
@@ -87,9 +87,7 @@ export default function Input() {
     if ('Accelerometer' in window) {
       try {
         const acc = new window.Accelerometer({ frequency: 60 });
-        /*acc.addEventListener("reading", function(){
-     
-        })*/
+
         acc.onreading = () => {
           const deltaX = Math.abs(lastX - acc.x);
           const deltaY = Math.abs(lastY - acc.y);
@@ -99,13 +97,13 @@ export default function Input() {
             ((deltaX > options.threshold) && (deltaZ > options.threshold)) ||
             ((deltaY > options.threshold) && (deltaZ > options.threshold))
           ) {
-            if (!shaking) {
+            if (!moving) {
               cancelMessage();
-              shaking = true;
+              moving = true;
             }
           } else {
-            if (shaking) {
-              shaking = false;
+            if (moving) {
+              moving = false;
             }
           }
 
@@ -122,6 +120,45 @@ export default function Input() {
     }
   }
 
+  function configureMouseMove() {
+
+    let lastX = 0;
+    let lastY = 0;
+
+    let moving = false;
+
+    const options = {
+      threshold: 60
+    };
+
+    let timeThreshold;
+
+
+    document.getElementById("root").addEventListener('mousemove', e => {
+
+      if (lastX !== 0 && lastY !== 0) {
+        const deltaX = Math.abs(lastX - e.offsetX);
+        const deltaY = Math.abs(lastY - e.offsetY);
+
+        if (((deltaX > options.threshold) && (deltaY > options.threshold))) {
+          if (!moving) {
+            cancelMessage();
+            moving = true;
+          }
+        } else {
+          if (moving) {
+            moving = false;
+          }
+        }
+      }
+
+      lastX = e.offsetX;
+      lastY = e.offsetY;
+
+    });
+  }
+
+  configureMouseMove();
   configureAccelerometer();
 
   return (
