@@ -2,8 +2,6 @@ const express = require('express');
 const { SocketAddress } = require('net');
 const app = express();
 const server = require("http").Server(app);
-const axios = require('axios');
-const { getEventListeners } = require('events');
 
 // Connected user data
 let user_list = [];
@@ -85,8 +83,7 @@ io.on("connection", function (socket) {
 let userResponseTimer;
 let secondsToAnswer = 30;
 
-// Stores the correct answer to the current challenge
-let correctAnswer;
+// Stores the current challenge
 let currentChallengedUser;
 
 // Challenges a random user on a certain period of time
@@ -98,23 +95,10 @@ async function challengeRandomUser() {
     let randomIndex = Math.floor(Math.random() * user_list.length);
     currentChallengedUser = user_list[randomIndex];
 
-    // Get the random question
-    const question = await getTriviaQuestion();
-    correctAnswer = question.correct_answer;
-
     console.log("NEW CHALLENGED USER: [" + currentChallengedUser.username + "]");
-    console.log(question);
-
-    let answersArray = question.incorrect_answers;
-    answersArray.push(question.correct_answer);
-
-    let challenge = {
-      question: question.question,
-      answers: shuffleQuestions(answersArray)
-    };
 
     // Send the user the challenge
-    io.to(currentChallengedUser.id).emit("server_challenge", challenge);
+    io.to(currentChallengedUser.id).emit("server_challenge");
 
     // If the user doesn't answer in the specified time, disconnect him
     userResponseTimer = setTimeout(disconnectUser, secondsToAnswer * 1000);
@@ -131,7 +115,7 @@ function disconnectUser() {
 
 // If the answer is right, let the user go
 function answerCurrentChallenge(response) {
-  if (response == correctAnswer) {
+  if (response) {
     console.log("THE ANSWER IS CORRECT!");
     clearTimeout(userResponseTimer);
   }
@@ -140,26 +124,6 @@ function answerCurrentChallenge(response) {
     disconnectUser();
   }
 
-}
-
-// Makes a petition to the API and brings a random question
-const getTriviaQuestion = async () => {
-  try {
-    const response = await axios.get('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple');
-    // const response = await fetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple');
-    return response.data.results[0];
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-function shuffleQuestions(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
 }
 
 // A user is challenged every minute

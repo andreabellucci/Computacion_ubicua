@@ -33,6 +33,7 @@ export default function App() {
   const [newMessage, setNewMessage] = useState("");
   const [challenge, setChallenge] = useState(null);
   const [pendingSendingMessage, setPendingSendingMessage] = useState(null);
+  const [arrayShuffledQuestions, setArrayShuffledQuestions] = useState(null);
 
 
   /* 
@@ -65,8 +66,22 @@ export default function App() {
     });
 
     // The server challenge us
-    socket.on("server_challenge", (challenge) => {
-      setChallenge(challenge);
+    socket.on("server_challenge", () => {
+      // Makes a petition to the API and brings a random question
+
+      fetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple')
+        .then(response => response.json())
+        .then(data => {
+          setChallenge(data.results[0]);
+
+          let array = data.results[0].incorrect_answers;
+          array.push(data.results[0].correct_answer);
+          setArrayShuffledQuestions(shuffleQuestions(array));
+        })
+        .catch(err => {
+          console.log(err);
+          setChallenge(null);
+        });
     });
 
     // The server force-disconnect us
@@ -79,9 +94,25 @@ export default function App() {
     setSocket(socket);
   }, []);
 
-
   /* 
   * BLOCK 3
+  * Aux functions
+  */
+  function shuffleQuestions(array) {
+
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    console.log(array);
+
+    return array;
+  }
+
+
+  /* 
+  * BLOCK 4
   * App build
   */
   return (
@@ -96,7 +127,8 @@ export default function App() {
         value7: [currentPrivateChat, setCurrentPrivateChat],
         value8: [newMessage, setNewMessage],
         value9: [challenge, setChallenge],
-        value10: [pendingSendingMessage, setPendingSendingMessage]
+        value10: [pendingSendingMessage, setPendingSendingMessage],
+        value11: [arrayShuffledQuestions, setArrayShuffledQuestions]
       }}>
         <Challenge />
         <Header />
