@@ -26,6 +26,8 @@ export default function Input() {
       } else if (mode === "timer") {
 
         setPendingSendingMessage(newGlobalMessage);
+        configureMouseMove();
+        configureAccelerometer();
 
         // Send the message in the next 5 seconds...
         setTimerMessage(setTimeout(() => {
@@ -49,6 +51,8 @@ export default function Input() {
       } else if (mode === "timer") {
 
         setPendingSendingMessage(newPrivateMessage);
+        configureMouseMove();
+        configureAccelerometer();
 
         // Send the message in the next 5 seconds...
         setTimerMessage(setTimeout(() => {
@@ -120,6 +124,7 @@ export default function Input() {
     }
   }
 
+  // llamar a esto solo cuando se lleve a cabo en envío del mensaje de turno
   function configureMouseMove() {
 
     let lastX = 0;
@@ -157,9 +162,6 @@ export default function Input() {
 
     });
   }
-
-  configureMouseMove();
-  configureAccelerometer();
 
   return (
     <div>
