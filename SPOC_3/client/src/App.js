@@ -13,6 +13,7 @@ import GlobalChat from "./components/GlobalChat";
 import PrivateChat from "./components/PrivateChat";
 import PendingMessage from "./components/PendingMessage";
 import Input from "./components/Input";
+import Simon from "./components/Simon";
 
 
 const generator = require('project-name-generator');
@@ -28,7 +29,7 @@ export default function App() {
   const [publicMessageStack, setPublicMessageStack] = useState([]);
   const [privateMessageStack, setPrivateMessageStack] = useState([]);
   const [connectedUserList, setConnectedUserList] = useState([]);
-  const [currentView, setCurrentView] = useState("global"); // global, private, users
+  const [currentView, setCurrentView] = useState("global"); // global, private, users, simon
   const [currentPrivateChat, setCurrentPrivateChat] = useState(""); // Who you're talking in private at the moment
   const [newMessage, setNewMessage] = useState("");
   const [challenge, setChallenge] = useState(null);
@@ -67,8 +68,8 @@ export default function App() {
 
     // The server challenge us
     socket.on("server_challenge", () => {
-      // Makes a petition to the API and brings a random question
 
+      // Makes a petition to the API and brings a random question
       fetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple')
         .then(response => response.json())
         .then(data => {
@@ -129,6 +130,7 @@ export default function App() {
         value10: [pendingSendingMessage, setPendingSendingMessage],
         value11: [arrayShuffledQuestions, setArrayShuffledQuestions]
       }}>
+        <Simon />
         <Challenge />
         <Header />
         <GlobalChat />

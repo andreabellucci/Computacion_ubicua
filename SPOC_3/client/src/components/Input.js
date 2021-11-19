@@ -128,7 +128,7 @@ export default function Input() {
   function configureMouseMove() {
 
     let lastX = 0;
-    let lastY = 0;
+    // let lastY = 0;
 
     let moving = false;
 
@@ -141,11 +141,11 @@ export default function Input() {
 
     document.getElementById("root").addEventListener('mousemove', e => {
 
-      if (lastX !== 0 && lastY !== 0) {
+      if (lastX !== 0 /*&& lastY !== 0*/) {
         const deltaX = Math.abs(lastX - e.offsetX);
-        const deltaY = Math.abs(lastY - e.offsetY);
+        // const deltaY = Math.abs(lastY - e.offsetY);
 
-        if (((deltaX > options.threshold) && (deltaY > options.threshold))) {
+        if ((deltaX > options.threshold) /*&& (deltaY > options.threshold)*/) {
           if (!moving) {
             cancelMessage();
             moving = true;
@@ -158,7 +158,7 @@ export default function Input() {
       }
 
       lastX = e.offsetX;
-      lastY = e.offsetY;
+      // lastY = e.offsetY;
 
     });
   }
@@ -169,20 +169,20 @@ export default function Input() {
         <footer id="footer_div">
           <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
           {timerMessage &&
-            <input type="submit" onClick={cancelMessage} class="input_submit" value="&#128473;" />
+            <input type="submit" onClick={cancelMessage} className="input_submit" value="&#128473;" />
           }
           {currentView === "global" && !timerMessage &&
-            <input type="submit" onClick={() => sendPublicMessage("timer")} class="input_submit" value="&#128337;" />
+            <input type="submit" onClick={() => sendPublicMessage("timer")} className="input_submit" value="&#128337;" />
           }
           {currentView === "private" && !timerMessage &&
-            < input type="submit" onClick={() => sendPrivateMessage("timer")} class="input_submit" value="&#128337;" />
+            < input type="submit" onClick={() => sendPrivateMessage("timer")} className="input_submit" value="&#128337;" />
           }
 
           {currentView === "global" && !timerMessage &&
-            < input type="submit" onClick={() => sendPublicMessage("normal")} class="input_submit" value="&#10148;" />
+            < input type="submit" onClick={() => sendPublicMessage("normal")} className="input_submit" value="&#10148;" />
           }
           {currentView === "private" && !timerMessage &&
-            < input type="submit" onClick={() => sendPrivateMessage("normal")} class="input_submit" value="&#10148;" />
+            < input type="submit" onClick={() => sendPrivateMessage("normal")} className="input_submit" value="&#10148;" />
           }
         </footer>
       }

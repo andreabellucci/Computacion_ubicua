@@ -252,3 +252,70 @@ footer {
 #text_message_username_pending {
   font-weight: bold;
 }
+
+#simon_game_container {
+  position: fixed;
+  top: 7.5%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+}
+
+#upper_simon {
+  display: flex;
+  position: fixed;
+  top: 7.5%;
+  bottom: 50%;
+  right: 0;
+  left: 0;
+}
+
+#lower_simon {
+  display: flex;
+  position: fixed;
+  top: 50%;
+  bottom: 7.5%;
+  right: 0;
+  left: 0;
+}
+
+#simon_part_yellow {
+  background-color: #ffea37;
+  width: 50%;
+}
+
+#simon_part_blue {
+  background-color: #4b3edd;
+  width: 50%;
+}
+
+#simon_part_red {
+  background-color: #dd4b3e;
+  width: 50%;
+}
+
+#simon_part_green {
+  background-color: #3edd4b;
+  width: 50%;
+}
+
+#simon_game_info {
+  background-color: #aaaaaa;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+  padding: 1%;
+  display: flex;
+  position: fixed;
+  top: 92.5%;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.simon_button {
+  float: right;
+  white-space: nowrap;
+  width: 12%;
+  border-radius: 7px;
+  margin-right: 1%;
+  border: 2px solid rgba(0, 0, 0, 0.568);
+}
