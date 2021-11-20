@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Context } from "./Context";
 
 export default function Input() {
@@ -10,9 +10,14 @@ export default function Input() {
   const [currentView, setCurrentView] = value6;
   const [currentPrivateChat, setCurrentPrivateChat] = value7;
   const [newMessage, setNewMessage] = value8;
-  const [timerMessage, setTimerMessage] = useState(null);
+  const timerMessage = useRef();
   const [pendingSendingMessage, setPendingSendingMessage] = value10;
+  // const [timeThreshold, setTimeThreshold] = useState(null);
 
+  useEffect(() => {
+    configureMouseMove();
+    configureAccelerometer();
+  }, []);
 
   function sendPublicMessage(mode) {
     // Extract the message from the box and clear it
@@ -26,15 +31,13 @@ export default function Input() {
       } else if (mode === "timer") {
 
         setPendingSendingMessage(newGlobalMessage);
-        configureMouseMove();
-        configureAccelerometer();
 
         // Send the message in the next 5 seconds...
-        setTimerMessage(setTimeout(() => {
+        timerMessage.current = setTimeout(() => {
           socket.emit("broadcast_public_message", newGlobalMessage);
-          setTimerMessage(null);
+          timerMessage.current = null;
           setPendingSendingMessage(null);
-        }, 5000));
+        }, 5000);
       }
     }
   }
@@ -55,19 +58,19 @@ export default function Input() {
         configureAccelerometer();
 
         // Send the message in the next 5 seconds...
-        setTimerMessage(setTimeout(() => {
+        timerMessage.current = setTimeout(() => {
           socket.emit("send_private_message", newPrivateMessage);
           setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, newPrivateMessage]);
-          setTimerMessage(null);
+          timerMessage.current = null;
           setPendingSendingMessage(null);
-        }, 5000));
+        }, 5000);
       }
     }
   }
 
   function cancelMessage() {
-    clearTimeout(timerMessage);
-    setTimerMessage(null);
+    clearTimeout(timerMessage.current);
+    timerMessage.current = null;
     setPendingSendingMessage(null);
   }
 
@@ -124,42 +127,33 @@ export default function Input() {
     }
   }
 
-  // llamar a esto solo cuando se lleve a cabo en envío del mensaje de turno
   function configureMouseMove() {
 
     let lastX = 0;
-    // let lastY = 0;
-
-    let moving = false;
 
     const options = {
-      threshold: 60
+      threshold: 300,
+      windowJumpingError: 800
     };
 
     let timeThreshold;
 
+    document.body.addEventListener('mousemove', e => {
 
-    document.getElementById("root").addEventListener('mousemove', e => {
+      if (!timeThreshold) {
+        if (lastX !== 0) {
+          const deltaX = Math.abs(lastX - e.offsetX);
 
-      if (lastX !== 0 /*&& lastY !== 0*/) {
-        const deltaX = Math.abs(lastX - e.offsetX);
-        // const deltaY = Math.abs(lastY - e.offsetY);
-
-        if ((deltaX > options.threshold) /*&& (deltaY > options.threshold)*/) {
-          if (!moving) {
+          if ((deltaX > options.threshold) && deltaX < options.windowJumpingError) {
+            console.log(deltaX);
             cancelMessage();
-            moving = true;
-          }
-        } else {
-          if (moving) {
-            moving = false;
           }
         }
+
+        lastX = e.offsetX;
+
+        timeThreshold = setTimeout(() => timeThreshold = null, 50);
       }
-
-      lastX = e.offsetX;
-      // lastY = e.offsetY;
-
     });
   }
 
@@ -168,20 +162,20 @@ export default function Input() {
       {(currentView === "global" || currentView === "private") &&
         <footer id="footer_div">
           <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
-          {timerMessage &&
+          {timerMessage.current &&
             <input type="submit" onClick={cancelMessage} className="input_submit" value="&#128473;" />
           }
-          {currentView === "global" && !timerMessage &&
+          {currentView === "global" && !timerMessage.current &&
             <input type="submit" onClick={() => sendPublicMessage("timer")} className="input_submit" value="&#128337;" />
           }
-          {currentView === "private" && !timerMessage &&
+          {currentView === "private" && !timerMessage.current &&
             < input type="submit" onClick={() => sendPrivateMessage("timer")} className="input_submit" value="&#128337;" />
           }
 
-          {currentView === "global" && !timerMessage &&
+          {currentView === "global" && !timerMessage.current &&
             < input type="submit" onClick={() => sendPublicMessage("normal")} className="input_submit" value="&#10148;" />
           }
-          {currentView === "private" && !timerMessage &&
+          {currentView === "private" && !timerMessage.current &&
             < input type="submit" onClick={() => sendPrivateMessage("normal")} className="input_submit" value="&#10148;" />
           }
         </footer>
