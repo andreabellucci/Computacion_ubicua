@@ -6,26 +6,103 @@ export default function Simon() {
   const { value6 } = useContext(Context);
   const [currentView, setCurrentView] = value6;
   const [inGame, setInGame] = useState(false);
+  const [inMove, setInMove] = useState(false);
   const [movementSimonStack, setMovementSimonStack] = useState([]);
   const [userStackIndex, setUserStackIndex] = useState(0);
+  const [movementCounter, setMovementCounter] = useState(0);
 
   function startGame() {
-    setMovementSimonStack([]);
     setInGame(true);
+    setInMove(false);
+    setMovementSimonStack([]);
+    setUserStackIndex(0);
+    setMovementCounter(0);
+
+    setTimeout(simonMovement, 1000);
   }
 
-  function stopGame() {
-    setInGame(false);
+  function simonMovement() {
+    let randomColor = Math.floor(Math.random() * 4); // rng [0,3]
+
+    switch (randomColor) {
+      case 0:
+        setMovementSimonStack((prevMovementSimonStack) => [...prevMovementSimonStack, "yellow"]);
+        darkenColor("yellow");
+        break;
+      case 1:
+        setMovementSimonStack((prevMovementSimonStack) => [...prevMovementSimonStack, "blue"]);
+        darkenColor("blue");
+        break;
+      case 2:
+        setMovementSimonStack((prevMovementSimonStack) => [...prevMovementSimonStack, "red"]);
+        darkenColor("red");
+        break;
+      case 3:
+        setMovementSimonStack((prevMovementSimonStack) => [...prevMovementSimonStack, "green"]);
+        darkenColor("green");
+        break;
+    }
+
+    setMovementCounter((prev) => prev + 1);
+    setUserStackIndex(0);
+    setInMove(false);
   }
+
+  function printPrevStack() {
+
+    setInMove(true);
+
+    // Print all the previous simon movements
+    for (let i = 0; i < movementSimonStack.length; i++) {
+      setTimeout(() => darkenColor(movementSimonStack[i]), (i + 1) * 1000);
+    }
+
+    // Finally make simon move
+    setTimeout(simonMovement, (movementSimonStack.length + 1) * 1000);
+  }
+
+
+  function darkenColor(color) {
+    switch (color) {
+      case "yellow":
+        document.getElementById("simon_part_yellow").style.backgroundColor = "#887b02";
+        setTimeout(() => { document.getElementById("simon_part_yellow").style.backgroundColor = "#ffea37" }, 700);
+        break;
+      case "blue":
+        document.getElementById("simon_part_blue").style.backgroundColor = "#2e268a";
+        setTimeout(() => { document.getElementById("simon_part_blue").style.backgroundColor = "#4b3edd"; }, 700);
+        break;
+      case "red":
+        document.getElementById("simon_part_red").style.backgroundColor = "#69241e";
+        setTimeout(() => { document.getElementById("simon_part_red").style.backgroundColor = "#dd4b3e"; }, 700);
+        break;
+      case "green":
+        document.getElementById("simon_part_green").style.backgroundColor = "#26752d";
+        setTimeout(() => { document.getElementById("simon_part_green").style.backgroundColor = "#3edd4b"; }, 700);
+        break;
+    }
+  }
+
 
   function colorChoice(color) {
+
     if (inGame) {
-      if (movementSimonStack[userStackIndex] === color) {
-        setUserStackIndex(userStackIndex + 1);
-      } else {
-        alert("Sequence NOT correct, you lose");
-        setInGame(false);
+      if (!inMove) {
+        darkenColor(color);
+
+        if (movementSimonStack[userStackIndex] !== color) {
+          alert("Sequence NOT correct, you lose");
+          setInGame(false);
+        }
+
+        if (userStackIndex === movementCounter - 1) {
+          printPrevStack();
+        } else {
+          setUserStackIndex((prev) => prev + 1);
+        }
       }
+    } else {
+      alert("Press PLAY BUTTON to start the game");
     }
   }
 
@@ -43,7 +120,7 @@ export default function Simon() {
           </div>
           <div id="simon_game_info">
             <input type="submit" onClick={() => startGame()} className="simon_button" value="&#9654;" />
-            <input type="submit" onClick={() => stopGame()} className="simon_button" value="	&#9209;" />
+            <input type="submit" onClick={() => setInGame(false)} className="simon_button" value="	&#9209;" />
           </div>
         </div>
       }

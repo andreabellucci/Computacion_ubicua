@@ -36,7 +36,7 @@ export default function PrivateChat() {
                 </div>
               );
             } else
-              return;
+              return <div></div>
           })}
         </div>
       }
