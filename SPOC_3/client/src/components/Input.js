@@ -133,7 +133,7 @@ export default function Input() {
 
     const options = {
       threshold: 300,
-      windowJumpingError: 800
+      windowJumpingError: 800 // control the excess of movement caused by the mouse hovering out of the html page
     };
 
     let timeThreshold;
@@ -145,7 +145,6 @@ export default function Input() {
           const deltaX = Math.abs(lastX - e.offsetX);
 
           if ((deltaX > options.threshold) && deltaX < options.windowJumpingError) {
-            console.log(deltaX);
             cancelMessage();
           }
         }

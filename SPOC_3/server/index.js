@@ -127,6 +127,6 @@ function answerCurrentChallenge(response) {
 }
 
 // A user is challenged every minute
-// setTimeout(challengeRandomUser, 60000);
+setTimeout(challengeRandomUser, 1000);
 
 server.listen(3001, () => console.log('server started'));

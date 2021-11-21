@@ -70,9 +70,12 @@ export default function App() {
     socket.on("server_challenge", () => {
 
       // Makes a petition to the API and brings a random question
-      fetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=medium&type=multiple')
+      fetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple')
         .then(response => response.json())
         .then(data => {
+          // Decode all HTML especial characters and shuffle the right and wrong answers
+          let auxChallenge = data.results[0];
+          auxChallenge.question = decodeHTML(auxChallenge.question);
           setChallenge(data.results[0]);
           console.log(data.results[0].correct_answer);
 
@@ -107,8 +110,18 @@ export default function App() {
       [array[i], array[j]] = [array[j], array[i]];
     }
 
+    for (let i = 0; i < array.length; i++) {
+      array[i] = decodeHTML(array[i]);
+    }
+
     return array;
   }
+
+  function decodeHTML(html) {
+    var txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  };
 
 
   /* 
