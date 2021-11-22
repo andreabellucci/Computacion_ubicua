@@ -10,6 +10,7 @@ export default function Simon() {
   const [movementSimonStack, setMovementSimonStack] = useState([]);
   const [userStackIndex, setUserStackIndex] = useState(0);
   const [movementCounter, setMovementCounter] = useState(0);
+  const [simonRoundCounter, setSimonRoundCounter] = useState(0);
 
   function startGame() {
     setInGame(true);
@@ -46,6 +47,7 @@ export default function Simon() {
     setMovementCounter((prev) => prev + 1);
     setUserStackIndex(0);
     setInMove(false);
+    setSimonRoundCounter(simonRoundCounter + 1);
   }
 
   function printPrevStack() {
@@ -66,19 +68,19 @@ export default function Simon() {
     switch (color) {
       case "yellow":
         document.getElementById("simon_part_yellow").style.backgroundColor = "#887b02";
-        setTimeout(() => { document.getElementById("simon_part_yellow").style.backgroundColor = "#ffea37" }, 700);
+        setTimeout(() => { document.getElementById("simon_part_yellow").style.backgroundColor = "#ffea37" }, 300);
         break;
       case "blue":
         document.getElementById("simon_part_blue").style.backgroundColor = "#2e268a";
-        setTimeout(() => { document.getElementById("simon_part_blue").style.backgroundColor = "#4b3edd"; }, 700);
+        setTimeout(() => { document.getElementById("simon_part_blue").style.backgroundColor = "#4b3edd"; }, 300);
         break;
       case "red":
         document.getElementById("simon_part_red").style.backgroundColor = "#69241e";
-        setTimeout(() => { document.getElementById("simon_part_red").style.backgroundColor = "#dd4b3e"; }, 700);
+        setTimeout(() => { document.getElementById("simon_part_red").style.backgroundColor = "#dd4b3e"; }, 300);
         break;
       case "green":
         document.getElementById("simon_part_green").style.backgroundColor = "#26752d";
-        setTimeout(() => { document.getElementById("simon_part_green").style.backgroundColor = "#3edd4b"; }, 700);
+        setTimeout(() => { document.getElementById("simon_part_green").style.backgroundColor = "#3edd4b"; }, 300);
         break;
     }
   }
@@ -119,6 +121,7 @@ export default function Simon() {
             <div id="simon_part_green" onClick={() => colorChoice("green")}></div>
           </div>
           <div id="simon_game_info">
+            <p>Ronda: {simonRoundCounter}</p>
             <input type="submit" onClick={() => startGame()} className="simon_button" value="&#9654;" />
             <input type="submit" onClick={() => setInGame(false)} className="simon_button" value="	&#9209;" />
           </div>

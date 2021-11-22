@@ -12,7 +12,6 @@ export default function Input() {
   const [newMessage, setNewMessage] = value8;
   const timerMessage = useRef();
   const [pendingSendingMessage, setPendingSendingMessage] = value10;
-  // const [timeThreshold, setTimeThreshold] = useState(null);
 
   useEffect(() => {
     configureMouseMove();
@@ -130,6 +129,7 @@ export default function Input() {
   function configureMouseMove() {
 
     let lastX = 0;
+    let movementCounter = 0;
 
     const options = {
       threshold: 300,
@@ -145,7 +145,11 @@ export default function Input() {
           const deltaX = Math.abs(lastX - e.offsetX);
 
           if ((deltaX > options.threshold) && deltaX < options.windowJumpingError) {
-            cancelMessage();
+            movementCounter++;
+
+            // You have to shake 5 times to cancel the message
+            if (movementCounter >= 5)
+              cancelMessage();
           }
         }
 
