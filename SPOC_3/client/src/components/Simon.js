@@ -121,9 +121,10 @@ export default function Simon() {
             <div id="simon_part_green" onClick={() => colorChoice("green")}></div>
           </div>
           <div id="simon_game_info">
-            <p>Ronda: {simonRoundCounter}</p>
             <input type="submit" onClick={() => startGame()} className="simon_button" value="&#9654;" />
             <input type="submit" onClick={() => setInGame(false)} className="simon_button" value="	&#9209;" />
+            <p>Ronda: {simonRoundCounter} </p>
+            <p>Status: {inGame ? "Playing" : "Stopped"} </p>
           </div>
         </div>
       }

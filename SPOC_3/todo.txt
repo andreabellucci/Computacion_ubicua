@@ -1,2 +1,4 @@
-cuando esté todo funcionando, descomponer la aplicación en componentes, dejando a la app con las variables y las tareas de actualización y eso
-estructurar la movida en app, renderizarla en index
+poner el simon dice en el servidor
+
+arreglar el css
+

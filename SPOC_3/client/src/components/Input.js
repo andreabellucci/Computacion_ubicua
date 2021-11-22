@@ -164,7 +164,7 @@ export default function Input() {
     <div>
       {(currentView === "global" || currentView === "private") &&
         <footer id="footer_div">
-          <input onInput={handleOnInput} type="text" id="input_message" placeholder="message..." />
+          <input onInput={handleOnInput} type="text" id="input_message" placeholder={"username: " + username} />
           {timerMessage.current &&
             <input type="submit" onClick={cancelMessage} className="input_submit" value="&#128473;" />
           }
