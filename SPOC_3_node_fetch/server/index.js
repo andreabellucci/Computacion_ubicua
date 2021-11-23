@@ -2,6 +2,8 @@ const express = require('express');
 const { SocketAddress } = require('net');
 const app = express();
 const server = require("http").Server(app);
+const nodeFetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 // Connected user data
 let user_list = [];
@@ -83,7 +85,8 @@ io.on("connection", function (socket) {
 let userResponseTimer;
 let secondsToAnswer = 30;
 
-// Stores the current challenge
+// Stores the correct answer to the current challenge
+let correctAnswer;
 let currentChallengedUser;
 
 // Challenges a random user on a certain period of time
@@ -95,10 +98,23 @@ async function challengeRandomUser() {
     let randomIndex = Math.floor(Math.random() * user_list.length);
     currentChallengedUser = user_list[randomIndex];
 
+    // Get the random question
+    const question = getTriviaQuestion();
+    correctAnswer = question.correct_answer;
+
     console.log("NEW CHALLENGED USER: [" + currentChallengedUser.username + "]");
+    console.log(question);
+
+    let answersArray = question.incorrect_answers;
+    answersArray.push(question.correct_answer);
+
+    let challenge = {
+      question: question.question,
+      answers: shuffleQuestions(answersArray)
+    };
 
     // Send the user the challenge
-    io.to(currentChallengedUser.id).emit("server_challenge");
+    io.to(currentChallengedUser.id).emit("server_challenge", challenge);
 
     // If the user doesn't answer in the specified time, disconnect him
     userResponseTimer = setTimeout(disconnectUser, secondsToAnswer * 1000);
@@ -115,7 +131,7 @@ function disconnectUser() {
 
 // If the answer is right, let the user go
 function answerCurrentChallenge(response) {
-  if (response) {
+  if (response == correctAnswer) {
     console.log("THE ANSWER IS CORRECT!");
     clearTimeout(userResponseTimer);
   }
@@ -125,6 +141,30 @@ function answerCurrentChallenge(response) {
   }
 
 }
+
+// Makes a petition to the API and brings a random question
+function getTriviaQuestion() {
+  nodeFetch('https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=multiple')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.results[0]);
+      return data.results[0];
+    })
+    .catch(err => {
+      console.log(err);
+      return null
+    });
+}
+
+function shuffleQuestions(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
 
 // A user is challenged every minute
 setTimeout(challengeRandomUser, 1000);

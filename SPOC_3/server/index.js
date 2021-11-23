@@ -48,6 +48,7 @@ io.on("connection", function (socket) {
 
   // Private message sending
   socket.on("send_private_message", function (message) {
+
     let sourceUser = message.from;
     let destinationUser = message.to;
 

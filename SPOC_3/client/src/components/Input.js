@@ -50,11 +50,10 @@ export default function Input() {
 
       if (mode === "normal") {
         socket.emit("send_private_message", newPrivateMessage);
+        setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, newPrivateMessage]);
       } else if (mode === "timer") {
 
         setPendingSendingMessage(newPrivateMessage);
-        configureMouseMove();
-        configureAccelerometer();
 
         // Send the message in the next 5 seconds...
         timerMessage.current = setTimeout(() => {
@@ -166,7 +165,7 @@ export default function Input() {
         <footer id="footer_div">
           <input onInput={handleOnInput} type="text" id="input_message" placeholder={"username: " + username} />
           {timerMessage.current &&
-            <input type="submit" onClick={cancelMessage} className="input_submit" value="&#128473;" />
+            <input type="submit" onClick={cancelMessage} className="input_submit" value="&#128721;" />
           }
           {currentView === "global" && !timerMessage.current &&
             <input type="submit" onClick={() => sendPublicMessage("timer")} className="input_submit" value="&#128337;" />

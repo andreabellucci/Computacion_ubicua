@@ -56,11 +56,11 @@ export default function Simon() {
 
     // Print all the previous simon movements
     for (let i = 0; i < movementSimonStack.length; i++) {
-      setTimeout(() => darkenColor(movementSimonStack[i]), (i + 1) * 1000);
+      setTimeout(() => darkenColor(movementSimonStack[i]), (i + 1) * 600);
     }
 
     // Finally make simon move
-    setTimeout(simonMovement, (movementSimonStack.length + 1) * 1000);
+    setTimeout(simonMovement, (movementSimonStack.length + 1) * 600);
   }
 
 

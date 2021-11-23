@@ -58,6 +58,7 @@ export default function App() {
 
     // A new PRIVATE message comes from the server
     socket.on("deliver_private_message", (message) => {
+      console.log(message);
       setPrivateMessageStack((prevMessageStack) => [...prevMessageStack, message]);
     });
 
