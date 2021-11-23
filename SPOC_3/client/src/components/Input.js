@@ -146,9 +146,12 @@ export default function Input() {
           if ((deltaX > options.threshold) && deltaX < options.windowJumpingError) {
             movementCounter++;
 
-            // You have to shake 5 times to cancel the message
-            if (movementCounter >= 5)
+            // You have to shake 4 times to cancel the message
+            if (movementCounter >= 4) {
               cancelMessage();
+              lastX = 0;
+              movementCounter = 0;
+            }
           }
         }
 

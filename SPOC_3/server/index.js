@@ -1,5 +1,4 @@
 const express = require('express');
-const { SocketAddress } = require('net');
 const app = express();
 const server = require("http").Server(app);
 
@@ -128,6 +127,6 @@ function answerCurrentChallenge(response) {
 }
 
 // A user is challenged every minute
-setTimeout(challengeRandomUser, 1000);
+setTimeout(challengeRandomUser, 60000);
 
 server.listen(3001, () => console.log('server started'));
