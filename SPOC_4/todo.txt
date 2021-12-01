@@ -1,4 +1,0 @@
-poner el simon dice en el servidor
-
-arreglar el css
-
