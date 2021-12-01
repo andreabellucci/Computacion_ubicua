@@ -131,7 +131,12 @@ export default function App() {
     })
       .then(() => {
         console.log("COMPLETED TASK WITH INDEX: " + index);
-        setTaskList((oldList) => [...oldList, oldList]);
+        setTaskList((oldList) => {
+          let newList = oldList;
+          newList[index].completed = true;
+
+          return newList
+        });
       })
       .catch((error) => {
         // The write failed...
