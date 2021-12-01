@@ -8,7 +8,9 @@ import {
   set,
   get,
   push,
-  onChildAdded
+  onChildAdded,
+  onChildChanged,
+  onChildRemoved
 } from "firebase/database";
 import { useEffect, useRef, useState } from "react";
 
@@ -49,6 +51,23 @@ export default function App() {
           completed: data.val().completed
         };
         setTaskList((oldList) => [...oldList, newAddedTask]);
+      });
+
+      onChildChanged(tasksRef, (data) => {
+        let newAddedTask = {
+          title: data.val().title,
+          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
+          completed: data.val().completed
+        };
+        setTaskList((oldList) => [...oldList, newAddedTask]);
+      });
+
+      onChildRemoved(tasksRef, (data) => {
+        let delTask = {
+          title: data.val().title,
+          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
+          completed: data.val().completed
+        };
       });
     }
   }, [isLoggedIn]);
@@ -127,13 +146,13 @@ export default function App() {
   function doneTask(index) {
     set(ref(db, taskList[index].reference), {
       title: taskList[index].title,
-      completed: true
+      completed: !taskList[index].completed
     })
       .then(() => {
         console.log("COMPLETED TASK WITH INDEX: " + index);
         setTaskList((oldList) => {
           let newList = oldList;
-          newList[index].completed = true;
+          newList[index].completed = !newList[index].completed;
 
           return newList
         });

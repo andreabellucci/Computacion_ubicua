@@ -120,7 +120,6 @@ body {
   display: flex;
   justify-content: center;
   background-color: rgb(175, 175, 175, 0.568);
-  overflow: hidden;
 }
 
 #login_button img {
