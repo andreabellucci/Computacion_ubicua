@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Indie Flower;
+  font-size: 16px;
+}
+
+h1 {
+  font-family: "Indie Flower";
+  font-size: 34px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 26.4px;
+  text-align: center;
+  margin: 4% 4% 5% 4%;
+}
+
+p {
+  font-family: "Indie Flower";
+  font-size: 16px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin-left: 2%;
+}
+
+.single_task_container {
+  display: inline-flex;
+  margin: 1%;
+  padding: 1%;
+}
+
+.task_check {
+  pointer-events: none;
+}
+
+body {
+  background-image: URL("https://www.wildtextures.com/wp-content/uploads/2011/12/wildtextures-seamless-paper-texture-480x480.jpg");
+}
+
+#task_list {
+  display: flex;
+  flex-direction: column;
+  margin: 2%;
+  padding: 2%;
+  border: solid 2px black;
+  border-radius: 5px;
+}
+
+#input_div {
+  margin: 2%;
+  display: flex;
+}
+
+#input_div button {
+  float: right;
+  width: -webkit-fit-content;
+  height: -webkit-fit-content;
+  width: -moz-fit-content;
+  height: -moz-fit-content;
+  padding-left: 1%;
+  padding-right: 1%;
+  margin-left: 1%;
+  white-space: nowrap;
+}
+
+#input_div input {
+  /* width: 70%; */
+  padding-left: 2%;
+  width: 100%;
+}
+
+#app_container {
+  margin: 2%;
+}
+
+#search_div {
+  margin: 2%;
+}
+
+#search_div input {
+  width: 97%;
+  overflow: hidden;
+  padding-left: 2%;
+}

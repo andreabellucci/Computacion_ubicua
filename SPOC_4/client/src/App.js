@@ -20,7 +20,7 @@ const firebaseConfig = {
   messagingSenderId: "462883885047",
   appId: "1:462883885047:web:5994a3b3d49563f91da8f2",
   databaseURL:
-  "https://prueba-ubicomp-21-22-default-rtdb.europe-west1.firebasedatabase.app/"
+    "https://prueba-ubicomp-21-22-52357-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
 // Initialize Firebase
@@ -35,6 +35,7 @@ export default function App() {
   const [userName, setUserName] = useState(null);
   const uid = useRef(null);
   const inputRef = useRef("");
+  const inputFilter = useRef("");
 
   const [taskList, setTaskList] = useState([]);
 
@@ -75,8 +76,12 @@ export default function App() {
     }
   };
 
-  function handleOnInput(e) {
+  function handleOnInputNewNote(e) {
     inputRef.current = e.target.value;
+  }
+
+  function handleOnInputFilter(e) {
+    inputFilter.current = e.target.value;
   }
 
   function handleAddTask() {
@@ -84,18 +89,56 @@ export default function App() {
     const newTaskRef = push(taskListRef, { title: inputRef.current });
   }
 
+  function filter() {
+
+    let filter = inputFilter.toUpperCase();
+    let p = document.getElementsByTagName('p');
+
+    if (filter == "") {
+      for (let i = 0; i < p.length; i++) {
+        var id = 'task_n_' + i;
+        var div_to_show = document.getElementById(id);
+        div_to_show.style.display = "";
+      }
+    } else {
+      for (let i = 0; i < p.length; i++) {
+
+        var id = 'task_n_' + i;
+        var div_to_show = document.getElementById(id);
+
+        if (p[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+          div_to_show.style.display = "";
+        } else {
+          div_to_show.style.display = "none";
+        }
+      }
+    }
+  }
+
   return (
     <div className="App">
       {isLoggedIn && (
-        <div>
-          <h1>Welcome, {userName}</h1>
-          <input onInput={handleOnInput}></input>
-          <button onClick={handleAddTask}>add task</button>
-          <ul>
+        <div id="app_container">
+          <h1>{userName}'s Notes</h1>
+          
+          <div id="search_div">
+            <input type="text" id="search_filter" onInput={handleOnInputFilter} onKeyUp={filter} placeholder="search filter" />
+          </div>
+
+          <div id="task_list">
             {taskList.map((el, i) => (
-              <li key={i}>{el.title}</li>
+              <div className='single_task_container' id={"task_n_" + i} key={i}>
+                <input type='checkbox' checked className='task_check' id={"task_completed_n_" + i} />
+                <p id={"task_text_n_" + i} style='text-decoration:line-through;'>el.title</p>
+              </div>
             ))}
-          </ul>
+          </div>
+
+          <div id="input_div">
+            <input onInput={handleOnInputNewNote} type="text" id="input_task" placeholder="new task"></input>
+            <button onClick={handleAddTask} id="add_button">add task</button>
+          </div>
+
         </div>
       )}
 
