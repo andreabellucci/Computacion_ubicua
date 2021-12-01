@@ -1,13 +1,36 @@
+@font-face {
+  font-family: 'Indie Flower';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/indieflower/v12/m8JVjfNVeKWVnh3QMuKkFcZVaUuH.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oleo Script';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/oleoscript/v9/rax5HieDvtMOe0iICsUccChdu08.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Merienda';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://fonts.gstatic.com/s/merienda/v9/gNMHW3x8Qoy5_mf8uWMFMIo.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 * {
   margin: 0;
   padding: 0;
-  font-family: Indie Flower;
-  font-size: 16px;
+  font-family: 'Merienda';
+  font-size: 14px;
 }
 
 h1 {
-  font-family: "Indie Flower";
-  font-size: 34px;
+  font-size: 30px;
   font-style: normal;
   font-variant: normal;
   font-weight: 700;
@@ -17,8 +40,7 @@ h1 {
 }
 
 p {
-  font-family: "Indie Flower";
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-variant: normal;
   font-weight: 400;
@@ -84,4 +106,28 @@ body {
   width: 97%;
   overflow: hidden;
   padding-left: 2%;
+}
+
+.completed_p {
+  text-decoration: overline;
+}
+
+#login_button {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  right: 10%;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(175, 175, 175, 0.568);
+}
+
+#login_button img {
+  border: 1px solid rgba(97, 97, 97, 0.568);
+  border-right: 0;
+  width: 60%;
+}
+
+#login_container h1 {
+  margin-top: 15%;
 }

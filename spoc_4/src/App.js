@@ -43,7 +43,11 @@ export default function App() {
     if (isLoggedIn) {
       const tasksRef = ref(db, "tasks/" + uid.current);
       onChildAdded(tasksRef, (data) => {
-        setTaskList((oldList) => [...oldList, data.val()]);
+        let newAddedTask = {
+          title: data.val().title,
+          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2]
+        };
+        setTaskList((oldList) => [...oldList, newAddedTask]);
       });
     }
   }, [isLoggedIn]);
@@ -79,14 +83,17 @@ export default function App() {
   function handleOnInputNewNote(e) {
     inputRef.current = e.target.value;
   }
-  
+
   function handleOnInputFilter(e) {
     inputFilter.current = e.target.value;
   }
 
   function handleAddTask() {
     const taskListRef = ref(db, "tasks/" + uid.current);
-    const newTaskRef = push(taskListRef, { title: inputRef.current });
+    const newTaskRef = push(taskListRef, {
+      title: inputRef.current,
+      completed: false
+    });
   }
 
   function filter() {
@@ -115,23 +122,70 @@ export default function App() {
     }
   }
 
+  // mark some task as done
+  function done(index) {
+    // // reverse the checked property
+    // todos[index].done = !todos[index].done;
+
+    // let data_string = JSON.stringify(todos);
+
+    // // update all the array data on the server side
+    // socket.emit("mod_task", data_string);
+
+    // update_task_list();
+    console.log(index);
+
+
+  }
+
+
+  // remove a single task
+  function remove(index) {
+    // todos.splice(index, 1);
+
+    // for (let i = 0; i < todos.length; i++) {
+    //   todos[i].id = i + 1;
+    // }
+
+    // let data_string = JSON.stringify(todos);
+
+    // // update all the array data on the server side
+    // socket.emit("mod_task", data_string);
+
+    // update_task_list();
+    console.log(index);
+
+    
+  }
+
   return (
     <div className="App">
       {isLoggedIn && (
         <div id="app_container">
           <h1>{userName}'s Notes</h1>
-          
+
           <div id="search_div">
             <input type="text" id="search_filter" onInput={handleOnInputFilter} onKeyUp={filter} placeholder="search filter" />
           </div>
 
           <div id="task_list">
-            {taskList.map((el, i) => (
-              <div className='single_task_container' id={"task_n_" + i} key={i}>
-                <input type='checkbox' checked className='task_check' id={"task_completed_n_" + i} />
-                <p id={"task_text_n_" + i} >{el.title}</p>
-              </div>
-            ))}
+            {taskList.map((el, i) => {
+              if (el.completed) {
+                return (<div className='single_task_container' id={"task_n_" + i} key={i}>
+                  <input type='checkbox' checked className='task_check' id={"task_completed_n_" + i} />
+                  <p id={"task_text_n_" + i} className='completed_p'>{el.title}</p>
+                  <button onClick={() => done(i)}>done</button>
+                  <button onClick={() => remove(i)}>delete</button>
+                </div>);
+              } else {
+                return (<div className='single_task_container' id={"task_n_" + i} key={i}>
+                  <input type='checkbox' className='task_check' id={"task_completed_n_" + i} />
+                  <p id={"task_text_n_" + i} >{el.title}</p>
+                  <button onClick={() => done(i)}>done</button>
+                  <button onClick={() => remove(i)}>delete</button>
+                </div>);
+              }
+            })}
           </div>
 
           <div id="input_div">
@@ -140,11 +194,20 @@ export default function App() {
           </div>
 
         </div>
-      )}
+      )
+      }
 
-      {!isLoggedIn && (
-        <button onClick={signInWithGoogle}>Sign-in with Google</button>
-      )}
-    </div>
+      {
+        !isLoggedIn && (
+          <div id='login_container'>
+            <h1>Welcome to:<br />My Notes!</h1>
+            <div id='login_button'>
+              <img src='https://cdn.pixabay.com/photo/2015/12/11/11/43/google-1088003_960_720.png' />
+              <button onClick={signInWithGoogle}>Sign-in with Google</button>
+            </div>
+          </div>
+        )
+      }
+    </div >
   );
 }
