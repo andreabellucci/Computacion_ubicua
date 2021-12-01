@@ -48,7 +48,6 @@ export default function App() {
           reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
           completed: data.val().completed
         };
-        console.log(data.val());
         setTaskList((oldList) => [...oldList, newAddedTask]);
       });
     }
@@ -126,26 +125,38 @@ export default function App() {
 
   // mark some task as done
   function doneTask(index) {
-    console.log(index);
     set(ref(db, taskList[index].reference), {
       title: taskList[index].title,
       completed: true
     })
       .then(() => {
-        console.log("Borrado!!!");
+        console.log("COMPLETED TASK WITH INDEX: " + index);
+        setTaskList((oldList) => [...oldList, oldList]);
       })
       .catch((error) => {
         // The write failed...
       });
-
   }
+
+  // let newList = taskList;
+  // newList[index].completed = true;
+  // setTaskList(newList);
+
+
+
+  // setTaskList((oldList) => {
+  //   let newList = oldList;
+  //   newList[index].completed = true;
+
+  //   return newList
+  // });
 
 
   // remove a single task
   function removeTask(index) {
     set(ref(db, taskList[index].reference), null)
       .then(() => {
-        console.log("Borrado!!!");
+        console.log("REMOVED TASK WITH INDEX: " + index);
       })
       .catch((error) => {
         // The write failed...
