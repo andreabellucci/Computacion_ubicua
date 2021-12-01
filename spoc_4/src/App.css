@@ -109,7 +109,7 @@ body {
 }
 
 .completed_p {
-  text-decoration: overline;
+  text-decoration: line-through;
 }
 
 #login_button {

@@ -45,8 +45,10 @@ export default function App() {
       onChildAdded(tasksRef, (data) => {
         let newAddedTask = {
           title: data.val().title,
-          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2]
+          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
+          completed: data.val().completed
         };
+        console.log(data.val());
         setTaskList((oldList) => [...oldList, newAddedTask]);
       });
     }
@@ -123,39 +125,31 @@ export default function App() {
   }
 
   // mark some task as done
-  function done(index) {
-    // // reverse the checked property
-    // todos[index].done = !todos[index].done;
-
-    // let data_string = JSON.stringify(todos);
-
-    // // update all the array data on the server side
-    // socket.emit("mod_task", data_string);
-
-    // update_task_list();
+  function doneTask(index) {
     console.log(index);
-
+    set(ref(db, taskList[index].reference), {
+      title: taskList[index].title,
+      completed: true
+    })
+      .then(() => {
+        console.log("Borrado!!!");
+      })
+      .catch((error) => {
+        // The write failed...
+      });
 
   }
 
 
   // remove a single task
-  function remove(index) {
-    // todos.splice(index, 1);
-
-    // for (let i = 0; i < todos.length; i++) {
-    //   todos[i].id = i + 1;
-    // }
-
-    // let data_string = JSON.stringify(todos);
-
-    // // update all the array data on the server side
-    // socket.emit("mod_task", data_string);
-
-    // update_task_list();
-    console.log(index);
-
-    
+  function removeTask(index) {
+    set(ref(db, taskList[index].reference), null)
+      .then(() => {
+        console.log("Borrado!!!");
+      })
+      .catch((error) => {
+        // The write failed...
+      });
   }
 
   return (
@@ -174,15 +168,15 @@ export default function App() {
                 return (<div className='single_task_container' id={"task_n_" + i} key={i}>
                   <input type='checkbox' checked className='task_check' id={"task_completed_n_" + i} />
                   <p id={"task_text_n_" + i} className='completed_p'>{el.title}</p>
-                  <button onClick={() => done(i)}>done</button>
-                  <button onClick={() => remove(i)}>delete</button>
+                  <button onClick={() => doneTask(i)}>done</button>
+                  <button onClick={() => removeTask(i)}>delete</button>
                 </div>);
               } else {
                 return (<div className='single_task_container' id={"task_n_" + i} key={i}>
                   <input type='checkbox' className='task_check' id={"task_completed_n_" + i} />
                   <p id={"task_text_n_" + i} >{el.title}</p>
-                  <button onClick={() => done(i)}>done</button>
-                  <button onClick={() => remove(i)}>delete</button>
+                  <button onClick={() => doneTask(i)}>done</button>
+                  <button onClick={() => removeTask(i)}>delete</button>
                 </div>);
               }
             })}
