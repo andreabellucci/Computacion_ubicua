@@ -38,11 +38,12 @@ const googleProvider = new GoogleAuthProvider();
 export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userName, setUserName] = useState(null);
+  const [taskList, setTaskList] = useState([]);
   const uid = useRef(null);
   const inputRef = useRef("");
   const inputFilter = useRef("");
 
-  const [taskList, setTaskList] = useState([]);
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -97,7 +98,9 @@ export default function App() {
         value4: inputRef,
         value5: inputFilter
       }}>
-        <Notes db={db} uid={uid} />
+        {isLoggedIn &&
+          <Notes db={db} uid={uid} listarda={taskList} />
+        }
       </Context.Provider>
 
       {

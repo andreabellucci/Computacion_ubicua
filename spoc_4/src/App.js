@@ -41,9 +41,10 @@ export default function App() {
 
   useEffect(() => {
     if (isLoggedIn) {
+
       const tasksRef = ref(db, "tasks/" + uid.current);
+
       onChildAdded(tasksRef, (data) => {
-        console.log("TASK ADDED");
         let newAddedTask = {
           title: data.val().title,
           reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
@@ -52,57 +53,7 @@ export default function App() {
         setTaskList((oldList) => [...oldList, newAddedTask]);
       });
 
-      // Set up the gesture features once it's logged
-      function configureGestures() {
-        // touch control block
-        let start_x = 0;
-        let end_x = 0;
-        let start_time = 0;
-        let start_hold;
-        const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
-        const SPACE_THRESHOLD = 100;
-
-        let taskListContainer = document.getElementById('task_list');
-
-        taskListContainer.addEventListener("touchstart", function (e) {
-          console.log("TOCADO!!!!!");
-          e.preventDefault();
-          start_x = e.targetTouches[0].screenX;
-          start_time = e.timeStamp;
-
-          // if you keep your finger at the task, it will be erased two seconds after
-          start_hold = setTimeout(function () {
-            var target_task = e.changedTouches[0];
-            // extract the index of the selected task
-            var task_index = target_task.target.id.match(/\d+/)[0];
-            doneTask(task_index);
-          }, 2000);
-
-        }, { passive: false });
-
-        taskListContainer.addEventListener("touchmove", function (e) {
-          e.preventDefault();
-          end_x = e.changedTouches[0].screenX;
-        }, { passive: false });
-
-        taskListContainer.addEventListener("touchend", function (e) {
-
-          // clear the timeout that activates hold action
-          clearTimeout(start_hold);
-
-          e.preventDefault();
-          let end_time = e.timeStamp;
-
-          // If this sentence is true, that means you've performed a SLIDE action
-          if (end_time - start_time < TIME_SLIDE_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
-            var target_task = e.changedTouches[0];
-            // extract the index of the selected task
-            var task_index = target_task.target.id.match(/\d+/)[0];
-            removeTask(task_index);
-          }
-        });
-      }
-
+      configureGestures();
     }
   }, [isLoggedIn]);
 
@@ -179,6 +130,7 @@ export default function App() {
     }
   }
 
+
   // mark some task as done
   function doneTask(index) {
     set(ref(db, taskList[index].reference), {
@@ -211,6 +163,56 @@ export default function App() {
       });
   }
 
+  function configureGestures() {
+    // Set up the gesture features once it's logged
+    // touch control block
+    let start_x = 0;
+    let end_x = 0;
+    let start_time = 0;
+    let start_hold;
+    const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
+    const SPACE_THRESHOLD = 100;
+
+    let taskListContainer = document.getElementById('task_list');
+
+    taskListContainer.addEventListener("touchstart", function (e) {
+      e.preventDefault();
+      start_x = e.targetTouches[0].screenX;
+      start_time = e.timeStamp;
+
+      // if you keep your finger at the task, it will be erased two seconds after
+      start_hold = setTimeout(function () {
+        var target_task = e.changedTouches[0];
+        // extract the index of the selected task
+        var task_index = target_task.target.id.match(/\d+/)[0];
+        doneTask(task_index);
+      }, 2000);
+
+    }, { passive: false });
+
+    taskListContainer.addEventListener("touchmove", function (e) {
+      e.preventDefault();
+      end_x = e.changedTouches[0].screenX;
+    }, { passive: false });
+
+    taskListContainer.addEventListener("touchend", function (e) {
+
+      // clear the timeout that activates hold action
+      clearTimeout(start_hold);
+
+      e.preventDefault();
+      let end_time = e.timeStamp;
+
+      // If this sentence is true, that means you've performed a SLIDE action
+      if (end_time - start_time < TIME_SLIDE_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
+        var target_task = e.changedTouches[0];
+        // extract the index of the selected task
+        var task_index = target_task.target.id.match(/\d+/)[0];
+        removeTask(task_index);
+      }
+    });
+  }
+
   return (
     <div className="App">
       {isLoggedIn && (
@@ -225,17 +227,13 @@ export default function App() {
             {taskList.map((el, i) => {
               if (el.completed) {
                 return (<div className='single_task_container' id={"task_n_" + i} key={i}>
-                  <input type='checkbox' checked={true} className='task_check' id={"task_completed_n_" + i} />
+                  <input type='checkbox' checked={true} readOnly className='task_check' id={"task_completed_n_" + i} />
                   <p id={"task_text_n_" + i} className='completed_p'>{el.title}</p>
-                  <button onClick={() => doneTask(i)}>done</button>
-                  <button onClick={() => removeTask(i)}>delete</button>
                 </div>);
               } else {
                 return (<div className='single_task_container' id={"task_n_" + i} key={i}>
-                  <input type='checkbox' checked={false} className='task_check' id={"task_completed_n_" + i} />
+                  <input type='checkbox' checked={false} readOnly className='task_check' id={"task_completed_n_" + i} />
                   <p id={"task_text_n_" + i} >{el.title}</p>
-                  <button onClick={() => doneTask(i)}>done</button>
-                  <button onClick={() => removeTask(i)}>delete</button>
                 </div>);
               }
             })}
