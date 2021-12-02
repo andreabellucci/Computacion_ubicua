@@ -8,9 +8,7 @@ import {
   set,
   get,
   push,
-  onChildAdded,
-  onChildChanged,
-  onChildRemoved
+  onChildAdded
 } from "firebase/database";
 import { useEffect, useRef, useState } from "react";
 
@@ -45,29 +43,13 @@ export default function App() {
     if (isLoggedIn) {
       const tasksRef = ref(db, "tasks/" + uid.current);
       onChildAdded(tasksRef, (data) => {
+        console.log("TASK ADDED");
         let newAddedTask = {
           title: data.val().title,
           reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
           completed: data.val().completed
         };
         setTaskList((oldList) => [...oldList, newAddedTask]);
-      });
-
-      onChildChanged(tasksRef, (data) => {
-        let newAddedTask = {
-          title: data.val().title,
-          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
-          completed: data.val().completed
-        };
-        setTaskList((oldList) => [...oldList, newAddedTask]);
-      });
-
-      onChildRemoved(tasksRef, (data) => {
-        let delTask = {
-          title: data.val().title,
-          reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
-          completed: data.val().completed
-        };
       });
     }
   }, [isLoggedIn]);
@@ -150,37 +132,24 @@ export default function App() {
     })
       .then(() => {
         console.log("COMPLETED TASK WITH INDEX: " + index);
-        setTaskList((oldList) => {
-          let newList = oldList;
-          newList[index].completed = !newList[index].completed;
-
-          return newList
-        });
+        let auxTasks = [...taskList];
+        auxTasks[index].completed = !auxTasks[index].completed;
+        setTaskList(auxTasks);
       })
       .catch((error) => {
         // The write failed...
       });
   }
 
-  // let newList = taskList;
-  // newList[index].completed = true;
-  // setTaskList(newList);
-
-
-
-  // setTaskList((oldList) => {
-  //   let newList = oldList;
-  //   newList[index].completed = true;
-
-  //   return newList
-  // });
-
-
   // remove a single task
   function removeTask(index) {
     set(ref(db, taskList[index].reference), null)
       .then(() => {
         console.log("REMOVED TASK WITH INDEX: " + index);
+
+        let auxTasks = [...taskList];
+        auxTasks.splice(index, 1);
+        setTaskList(auxTasks);
       })
       .catch((error) => {
         // The write failed...
