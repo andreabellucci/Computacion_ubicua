@@ -38,6 +38,7 @@ export default function App() {
   const inputFilter = useRef("");
 
   const [taskList, setTaskList] = useState([]);
+  const taskListRef = useRef([]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -50,7 +51,11 @@ export default function App() {
           reference: data.ref._path.pieces_[0] + "/" + data.ref._path.pieces_[1] + "/" + data.ref._path.pieces_[2],
           completed: data.val().completed
         };
-        setTaskList((oldList) => [...oldList, newAddedTask]);
+        setTaskList((oldList) => {
+         const newList = [...oldList, newAddedTask];
+         taskListRef.current = newList;
+         return newList;
+        });
       });
 
       // Set up the gesture features once it's logged
@@ -201,7 +206,7 @@ export default function App() {
   // remove a single task
   function removeTask(index) {
 
-    set(ref(db, taskList[index].reference), null)
+    set(ref(db, taskListRef.current[index].reference), null)
       .then(() => {
         console.log("REMOVED TASK WITH INDEX: " + index);
 
