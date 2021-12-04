@@ -53,9 +53,57 @@ export default function App() {
         setTaskList((oldList) => [...oldList, newAddedTask]);
       });
 
-      configureGestures();
+      // Set up the gesture features once it's logged
+      // touch control block
+      let start_x = 0;
+      let end_x = 0;
+      let start_time = 0;
+      let start_hold;
+      const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
+      const SPACE_THRESHOLD = 100;
+
+      let taskListContainer = document.getElementById('task_list');
+
+      taskListContainer.addEventListener("touchstart", function (e) {
+        e.preventDefault();
+        start_x = e.targetTouches[0].screenX;
+        start_time = e.timeStamp;
+
+        // if you keep your finger at the task, it will be erased two seconds after
+        start_hold = setTimeout(function () {
+          var target_task = e.changedTouches[0];
+          // extract the index of the selected task
+          var task_index = target_task.target.id.match(/\d+/)[0];
+          doneTask(task_index);
+        }, 2000);
+
+      }, { passive: false });
+
+      taskListContainer.addEventListener("touchmove", function (e) {
+        e.preventDefault();
+        end_x = e.changedTouches[0].screenX;
+      }, { passive: false });
+
+      taskListContainer.addEventListener("touchend", function (e) {
+
+        // clear the timeout that activates hold action
+        clearTimeout(start_hold);
+
+        e.preventDefault();
+        let end_time = e.timeStamp;
+
+        // If this sentence is true, that means you've performed a SLIDE action
+        if (end_time - start_time < TIME_SLIDE_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
+          var target_task = e.changedTouches[0];
+          // extract the index of the selected task
+          var task_index = target_task.target.id.match(/\d+/)[0];
+          removeTask(task_index);
+        }
+      });
+
     }
   }, [isLoggedIn]);
+
 
   const signInWithGoogle = async () => {
     try {
@@ -133,12 +181,14 @@ export default function App() {
 
   // mark some task as done
   function doneTask(index) {
+
     set(ref(db, taskList[index].reference), {
       title: taskList[index].title,
       completed: !taskList[index].completed
     })
       .then(() => {
         console.log("COMPLETED TASK WITH INDEX: " + index);
+
         let auxTasks = [...taskList];
         auxTasks[index].completed = !auxTasks[index].completed;
         setTaskList(auxTasks);
@@ -150,6 +200,7 @@ export default function App() {
 
   // remove a single task
   function removeTask(index) {
+
     set(ref(db, taskList[index].reference), null)
       .then(() => {
         console.log("REMOVED TASK WITH INDEX: " + index);
@@ -161,56 +212,6 @@ export default function App() {
       .catch((error) => {
         // The write failed...
       });
-  }
-
-  function configureGestures() {
-    // Set up the gesture features once it's logged
-    // touch control block
-    let start_x = 0;
-    let end_x = 0;
-    let start_time = 0;
-    let start_hold;
-    const TIME_SLIDE_THRESHOLD = 500; // Timer for Slide action
-    const SPACE_THRESHOLD = 100;
-
-    let taskListContainer = document.getElementById('task_list');
-
-    taskListContainer.addEventListener("touchstart", function (e) {
-      e.preventDefault();
-      start_x = e.targetTouches[0].screenX;
-      start_time = e.timeStamp;
-
-      // if you keep your finger at the task, it will be erased two seconds after
-      start_hold = setTimeout(function () {
-        var target_task = e.changedTouches[0];
-        // extract the index of the selected task
-        var task_index = target_task.target.id.match(/\d+/)[0];
-        doneTask(task_index);
-      }, 2000);
-
-    }, { passive: false });
-
-    taskListContainer.addEventListener("touchmove", function (e) {
-      e.preventDefault();
-      end_x = e.changedTouches[0].screenX;
-    }, { passive: false });
-
-    taskListContainer.addEventListener("touchend", function (e) {
-
-      // clear the timeout that activates hold action
-      clearTimeout(start_hold);
-
-      e.preventDefault();
-      let end_time = e.timeStamp;
-
-      // If this sentence is true, that means you've performed a SLIDE action
-      if (end_time - start_time < TIME_SLIDE_THRESHOLD && end_x - start_x > SPACE_THRESHOLD) {
-        var target_task = e.changedTouches[0];
-        // extract the index of the selected task
-        var task_index = target_task.target.id.match(/\d+/)[0];
-        removeTask(task_index);
-      }
-    });
   }
 
   return (
